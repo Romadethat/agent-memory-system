@@ -1155,3 +1155,122 @@ Chill AI sidekick to [Your Name]. Operating on [Your Platform].
 
 *Last updated: YYYY-MM-DD*
 ```
+
+---
+
+# 27. Building the Brain — Setup Guide
+
+> This section tells you how to actually build the memory system on your machine, whether you use Obsidian or not.
+
+## For Obsidian Users (Recommended)
+
+Obsidian gives you a visual graph, search, backlinks, and markdown editing for free.
+
+### Step 1: Create the Vault Folder
+
+```bash
+mkdir -p ~/agent-brain
+mkdir -p ~/agent-brain/vault/projects
+mkdir -p ~/agent-brain/vault/references
+mkdir -p ~/agent-brain/vault/concepts
+mkdir -p ~/agent-brain/vault/templates
+mkdir -p ~/agent-brain/vault/decisions
+mkdir -p ~/agent-brain/skills
+mkdir -p ~/agent-brain/bridge/inbox
+mkdir -p ~/agent-brain/bridge/outbound
+mkdir -p ~/agent-brain/bridge/done
+mkdir -p ~/agent-brain/bridge/blocked
+mkdir -p ~/agent-brain/bridge/shared
+mkdir -p ~/agent-brain/bridge/logs
+mkdir -p ~/agent-brain/logs/daily
+mkdir -p ~/agent-brain/ideas
+mkdir -p ~/agent-brain/reference/screenshots
+```
+
+### Step 2: Open in Obsidian
+
+1. Open Obsidian → "Open folder as vault" → select `~/agent-brain`
+2. Enable "Graph view" for visual connections
+3. Use `[[Wiki Links]]` to connect related pages
+4. Tag system: `#project`, `#client`, `#concept`, `#reference`
+
+### Step 3: Drop in the Core Files
+
+Place the template files from this document into your vault:
+- `AGENT_PROFILE.md` — who your agent is
+- `MEMORY_RULES.md` — what memory can hold
+- `project-state.md` — current status
+- `user-rules.md` — your preferences
+- `thinking-protocol.md` — how your agent reasons
+
+### Step 4: Connect Your AI Agent
+
+Tell your AI agent to start each session by reading `project-state.md` and searching the vault before answering. The startup prompt in Section 15 is your starting point.
+
+---
+
+## For Non-Obsidian Users (Plain Files)
+
+No Obsidian? No problem. Everything works with plain markdown files and a file explorer.
+
+### Step 1: Create the Folder Structure
+
+Same folders as above — just create them with your file manager or terminal:
+
+```bash
+mkdir -p ~/agent-brain/{vault/{projects,references,concepts,templates,decisions},skills,bridge/{inbox,outbound,done,blocked,shared,logs},logs/daily,ideas,reference/screenshots}
+```
+
+### Step 2: Use a Markdown Editor
+
+Any of these work:
+- **VS Code** — free, has markdown preview + search
+- **Typora** — clean, minimal markdown editor
+- **Notepad++** — lightweight, works on any Windows machine
+- **GitHub** — host your brain as a repo, edit in browser
+
+### Step 3: Search Without Obsidian
+
+If you don't have graph view or backlinks, use search instead:
+
+- **VS Code:** `Ctrl+Shift+F` to search all files
+- **Terminal:** `grep -r "keyword" ~/agent-brain/`
+- **GitHub:** built-in search across your repo
+
+### Step 4: Link Pages Without Wiki Links
+
+Instead of `[[Page Name]]`, use:
+- File paths: `see [projects/project-name.md](vault/projects/project-name.md)`
+- Tags in filenames: `project-name_concept_reference.md`
+- A central index file that lists everything
+
+### Step 5: Automate With Scripts
+
+Create simple scripts to help your agent:
+
+```bash
+# search.sh — search the brain
+grep -r "$1" ~/agent-brain/ --include="*.md"
+
+# log.sh — write a daily log entry
+echo "## $(date +%Y-%m-%d)" >> ~/agent-brain/logs/daily/$(date +%Y-%m-%d).md
+echo "$*" >> ~/agent-brain/logs/daily/$(date +%Y-%m-%d).md
+
+# status.sh — read current project state
+cat ~/agent-brain/project-state.md
+```
+
+---
+
+## The Most Important Rule
+
+Start small. Don't build all 27 sections at once.
+
+Begin with:
+1. `AGENT_PROFILE.md` — who your agent is (2 paragraphs)
+2. `project-state.md` — what you're working on right now (5 lines)
+3. One skill file — one repeatable task you do often
+
+Add more as you use it. The system grows with you — it doesn't need to be perfect on day one.
+
+**Memory is for active context. Files are for permanent knowledge.**
