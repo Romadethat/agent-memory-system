@@ -1526,3 +1526,469 @@ Chill AI sidekick to [Your Name]. Operating on [Your Platform].
 
 *Last updated: YYYY-MM-DD*
 ```
+# 35. Multi-Agent Coordination
+
+If you have more than one AI agent, they need a way to talk to each other without you being the messenger.
+
+## Bridge Folder System
+
+```txt
+bridge/
+  inbox/          # Incoming tasks, blueprints, instructions
+    from-ro/      # Direct from you
+    from-atlas/   # From your planning agent
+    from-antigravity/ # From your coding agent
+  outbound/       # Completed work, reports, questions
+    to-ro/
+    to-atlas/
+    to-antigravity/
+  done/           # Completed and archived tasks
+  blocked/        # Tasks that can't proceed
+  shared/         # Reference files all agents should see
+  logs/           # Communication history
+```
+
+## Handoff Convention
+
+When one agent finishes work for another, drop a file in the recipient's folder:
+
+```md
+---
+from: [sender]
+to: [recipient]
+type: [handoff|question|result|blueprint]
+status: [pending|complete|needs_review]
+---
+
+## What Was Done
+
+Brief summary of completed work.
+
+## What's Needed Next
+
+What the recipient should do with this.
+
+## Files Changed
+
+- path/to/file
+
+## Questions / Concerns
+
+Anything the recipient should know.
+```
+
+## Agent Cards
+
+Each agent should have a card file in `bridge/shared/` that all other agents can read:
+
+```md
+# Agent: [Name]
+
+## Role
+What this agent does.
+
+## Can Access
+- vault/ (read or write?)
+- terminal/ (yes or no?)
+- briefcase/ (yes or no?)
+- bridge/ (yes)
+
+## Communication
+- Send handoffs to: bridge/inbox/from-[name]/
+- Report results to: bridge/outbound/to-[name]/
+
+## Specialties
+- What they're good at
+- What NOT to ask them to do
+```
+
+## Team Workflow
+
+```
+You have an idea
+→ drop it in bridge/inbox/from-ro/
+→ Atlas picks it up, creates a blueprint
+→ drops blueprint in bridge/inbox/from-atlas/
+→ Zoro reads it, checks project-state, skills, vault
+→ routes implementation work to Antigravity if needed
+→ Antigravity builds it
+→ Zoro verifies
+→ results go to bridge/outbound/to-ro/
+→ knowledge saved to vault/
+→ project-state.md updated
+```
+
+---
+
+# 36. Building Your Own MCP Server
+
+MCP (Model Context Protocol) lets your agent expose tools that other AI apps can use — Claude Desktop, Cursor, VS Code extensions, and custom dashboards.
+
+## What You'll Need
+
+- Python 3.10+
+- `pip install mcp` (the MCP Python SDK)
+- A script that defines your tools
+
+## Minimal MCP Server
+
+```python
+#!/usr/bin/env python3
+"""Your Agent's MCP Server — exposes tools for other AI apps to use."""
+
+from mcp.server import Server, NotificationOptions
+from mcp.server.models import InitializationOptions
+import mcp.server.stdio
+
+# Create server
+server = Server("my-agent")
+
+# ── Tool Definitions ──────────────────────────────────────
+@server.list_tools()
+async def handle_list_tools() -> list:
+    return [
+        {
+            "name": "vault_search",
+            "description": "Search the agent's vault/knowledge base",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "query": {"type": "string", "description": "Search term"}
+                },
+                "required": ["query"]
+            }
+        },
+        {
+            "name": "read_project_state",
+            "description": "Read the current project state file",
+            "inputSchema": {
+                "type": "object",
+                "properties": {}
+            }
+        },
+        {
+            "name": "save_note",
+            "description": "Save a note to the vault",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "File path within vault"},
+                    "content": {"type": "string", "description": "Content to save"}
+                },
+                "required": ["path", "content"]
+            }
+        },
+        {
+            "name": "list_skills",
+            "description": "List available skill files",
+            "inputSchema": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    ]
+
+# ── Tool Implementations ──────────────────────────────────
+@server.call_tool()
+async def handle_call_tool(name: str, arguments: dict) -> list:
+    import subprocess, os
+
+    VAULT = os.path.expanduser("~/agent-brain/vault")
+
+    if name == "vault_search":
+        query = arguments["query"]
+        result = subprocess.run(
+            ["grep", "-ril", query, VAULT, "--include=*.md"],
+            capture_output=True, text=True, timeout=10
+        )
+        files = result.stdout.strip().split('\n') if result.stdout.strip() else []
+        return [{"type": "text", "text": f"Found {len(files)} results\n" + "\n".join(files[:20])}]
+
+    elif name == "read_project_state":
+        ps = os.path.expanduser("~/agent-brain/project-state.md")
+        if os.path.exists(ps):
+            with open(ps) as f:
+                return [{"type": "text", "text": f.read()}]
+        return [{"type": "text", "text": "No project-state.md found"}]
+
+    elif name == "save_note":
+        path = os.path.join(VAULT, arguments["path"])
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'w') as f:
+            f.write(arguments["content"])
+        return [{"type": "text", "text": f"Saved to {path}"}]
+
+    elif name == "list_skills":
+        skills_dir = os.path.expanduser("~/agent-brain/skills")
+        if os.path.exists(skills_dir):
+            files = [f for f in os.listdir(skills_dir) if f.endswith('.md')]
+            return [{"type": "text", "text": "Skills:\n" + "\n".join(files)}]
+        return [{"type": "text", "text": "No skills found"}]
+
+    raise ValueError(f"Unknown tool: {name}")
+
+# ── Run ───────────────────────────────────────────────────
+async def main():
+    async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
+        await server.run(
+            read_stream,
+            write_stream,
+            InitializationOptions(
+                server_name="my-agent",
+                server_version="1.0.0",
+            ),
+        )
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
+```
+
+## How to Use It
+
+1. Save the script as `agent-mcp-server.py`
+2. Run it: `python agent-mcp-server.py`
+3. Connect it to any MCP-compatible app:
+   - **Claude Desktop:** Add to `claude_desktop_config.json`
+   - **Cursor:** Add to `.cursor/mcp.json`
+   - **VS Code:** Add to settings
+
+## Claude Desktop Config Example
+
+```json
+{
+  "mcpServers": {
+    "my-agent": {
+      "command": "python",
+      "args": ["/path/to/agent-mcp-server.py"]
+    }
+  }
+}
+```
+
+## MCP Tool Ideas to Add
+
+| Tool | Purpose |
+|------|---------|
+| vault_search | Search your knowledge base |
+| vault_read | Read a specific vault file |
+| vault_write | Save new knowledge |
+| task_create | Create a new task from anywhere |
+| task_status | Check task status |
+| project_state | Read/write project-state.md |
+| note_to_self | Drop a quick note to your agent |
+| brainstorm | Quick spitball/idea save |
+| briefcase_read | Read an encrypted entry (with approval) |
+| daily_log | Write a daily summary |
+| handoff | Send a message to another agent |
+| run_skill | Execute a named skill file |
+
+## Rule
+
+Your MCP server should be a window into your brain, not a replacement for it. The files stay the source of truth — MCP just gives other apps access to them.
+
+---
+
+# 37. Memory Compaction Guide
+
+When your agent's memory fills up, here's how to clean it without losing anything important.
+
+## What Should Stay in Memory
+
+- Your name, role, location, preferences
+- Environment facts (OS, paths, installed tools)
+- Critical rules (storage rules, privacy rules, communication style)
+- Active project names (not details)
+- Partner agent names and roles
+- Tool locations (scripts, keys, config files)
+
+## What Should Move to Files
+
+- Session logs -> move to logs/daily/
+- Project details -> move to vault/projects/
+- Client lists -> move to vault/references/
+- Code explanations -> move to vault/concepts/ or skills/
+- Temporary TODO items -> create a task file in bridge/inbox/
+- Debugging notes -> move to logs/ or reference/
+- Research findings -> move to vault/references/
+
+## Compaction Commands
+
+```bash
+# Save session archive
+cp ~/agent-brain/logs/daily/$(date +%Y-%m-%d).md ~/agent-brain/vault/archive/
+
+# Remove old daily logs (keep last 30 days)
+find ~/agent-brain/logs/daily/ -name "*.md" -mtime +30 -delete
+
+# Consolidate multiple small skills into one umbrella skill
+```
+
+## The Golden Rule
+
+If you can find it in a file, it doesn't need to be in memory. Memory is for what you need INSTANTLY. Files are for everything else.
+
+---
+
+# 38. Session Continuity Protocol
+
+How to make your agent feel like it remembers you even though it starts fresh each time.
+
+## Start of Session
+
+The agent should do this automatically:
+
+1. Read `project-state.md` — what project are we on?
+2. Read latest daily log — what happened last time?
+3. Read agent card — who am I?
+4. Check `bridge/inbox/` — any new tasks?
+5. Check `bridge/shared/CONTEXT.md` — any system-wide updates?
+
+## End of Session
+
+The agent should do this automatically:
+
+1. Update `project-state.md` — what changed?
+2. Write daily log — what happened?
+3. Move completed tasks from inbox to done
+4. Save any new knowledge to vault
+5. Drop relay note for partner agents if needed
+
+## Startup Prompt
+
+```md
+Start each session by:
+1. Read ~/agent-brain/project-state.md
+2. Search ~/agent-brain/vault/ before guessing
+3. Check ~/agent-brain/bridge/inbox/ for new tasks
+4. Use ~/agent-brain/skills/ for repeatable work
+5. Default to action, not permission
+
+End each session by:
+1. Update project-state.md
+2. Write to ~/agent-brain/logs/daily/
+3. Move completed inbox items to done/
+4. Drop relay in bridge/outbound/ for partner agents
+```
+
+---
+
+# 39. Idea Catcher (The Spitball)
+
+Every agent needs a place to catch random thoughts so they don't get lost.
+
+## How It Works
+
+When you or your agent has a random idea, it goes straight to a timestamped file. Nothing gets forgotten.
+
+## File Format
+
+```txt
+ideas/
+  YYYY-MM-DD_HH-MM_description.md
+```
+
+## Entry Format
+
+```md
+# [Idea Title]
+
+**Date:** YYYY-MM-DD HH:MM
+**Source:** [conversation | shower thought | random | client feedback]
+
+## The Idea
+
+One or two sentences about what it is.
+
+## Why It Matters
+
+Why this could be useful.
+
+## Next Step (Optional)
+
+What to do with this later.
+```
+
+## Ideas Script
+
+```bash
+#!/bin/bash
+# Save an idea
+echo "# $*" > ~/agent-brain/ideas/$(date +%Y-%m-%d_%H-%M).md
+echo "**Date:** $(date)" >> ~/agent-brain/ideas/$(date +%Y-%m-%d_%H-%M).md
+echo "" >> ~/agent-brain/ideas/$(date +%Y-%m-%d_%H-%M).md
+echo "$*" >> ~/agent-brain/ideas/$(date +%Y-%m-%d_%H-%M).md
+echo "Idea saved"
+```
+
+## Related: Project Spitball
+
+Same idea but scoped to a project:
+
+```txt
+ideas/project-name/
+  YYYY-MM-DD_description.md
+```
+
+---
+
+# 40. Quick Reference — Folder Structure Summary
+
+Everything in one view:
+
+```txt
+agent-brain/
+├── AGENT_PROFILE.md          # Who the agent is
+├── MEMORY_RULES.md           # Memory vs files guidelines
+├── project-state.md          # Current project status
+├── user-rules.md             # Your preferences
+├── thinking-protocol.md      # How the agent reasons
+│
+├── vault/                    # Long-term knowledge
+│   ├── projects/             #   Active and past projects
+│   ├── references/           #   Research, links, examples
+│   ├── concepts/             #   Ideas, patterns, principles
+│   ├── templates/            #   Reusable document templates
+│   └── decisions/            #   Architecture decisions and why
+│
+├── skills/                   # Repeatable procedures
+│   ├── code-review.md
+│   ├── daily-summary.md
+│   └── agent-handoff.md
+│
+├── prompts/                  # Reusable prompt templates
+│   ├── image-design/
+│   ├── flyers/
+│   ├── music/
+│   ├── game-dev/
+│   ├── web-dev/
+│   ├── branding/
+│   ├── client-emails/
+│   ├── debugging/
+│   ├── zoro-system/
+│   └── agents/
+│
+├── bridge/                   # Multi-agent handoffs
+│   ├── inbox/
+│   ├── outbound/
+│   ├── done/
+│   ├── blocked/
+│   └── shared/
+│
+├── scripts/                  # Automation
+│   ├── agent-mcp-server.py
+│   ├── agent-cli.py
+│   ├── spitball.py
+│   └── end_of_session.py
+│
+├── logs/                     # Session history
+│   └── daily/
+│
+└── ideas/                    # Random thoughts
+```
+
+---
+
+**Memory is for active context. Files are for permanent knowledge.**
+
+*Last updated: YYYY-MM-DD*
