@@ -1987,8 +1987,79 @@ agent-brain/
 └── ideas/                    # Random thoughts
 ```
 
----
-
 **Memory is for active context. Files are for permanent knowledge.**
 
-*Last updated: YYYY-MM-DD*
+---
+
+# 41. Plugin System Pattern
+
+Plugins extend what your agent can do without modifying its core. Each plugin is a self-contained module with a manifest, tools, and an agent card for multi-agent discovery.
+
+## Plugin Structure
+
+```txt
+plugins/<plugin-name>/
+├── plugin.yaml           # Manifest: name, version, description, commands
+├── <plugin-name>.py      # Python implementation
+└── AGENT_CARD.md         # Agent card for other agents to discover
+```
+
+## Plugin Manifest
+
+```yaml
+name: plugin-name
+version: 1.0.0
+description: "What this plugin does"
+author: your-agent-name
+type: tool
+
+commands:
+  command-name:
+    description: "What the command does"
+    usage: "plugin.py command-name <args>"
+
+hooks:
+  pre_tool: []
+  post_tool: []
+
+depends_on:
+  - dependency-name
+```
+
+## Agent Card (Required)
+
+```md
+# Agent Card: plugin-name
+## Role
+What this plugin does.
+## Can Access
+- paths/it/can/read
+## Commands
+| Command | What it does |
+|---------|-------------|
+| cmd1 | Description |
+## Partner Agents
+How other agents can use this plugin.
+## Created
+YYYY-MM-DD
+```
+
+## CLI Integration
+
+```python
+def _plugin_cmd(name, args):
+    script = f"plugins/{name}/{name}.py"
+    # run with args
+
+handlers = {
+    "media": lambda: _plugin_cmd("zoro-media", args),
+    "ui": lambda: _plugin_cmd("master-ui", args),
+}
+```
+
+## Why This Pattern
+
+- Independent plugins — one breaks without affecting others
+- Agent cards let other AIs discover tools without asking you
+- CLI stays clean — add a plugin, add one line
+- Share plugins across a multi-agent team
