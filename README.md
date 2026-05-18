@@ -1274,3 +1274,99 @@ Begin with:
 Add more as you use it. The system grows with you — it doesn't need to be perfect on day one.
 
 **Memory is for active context. Files are for permanent knowledge.**
+
+---
+
+# 28. Copy-Paste Starter Prompt
+
+Paste this block into your AI agent's first message, system prompt, or startup instructions:
+
+```md
+You are now operating inside a file-based memory system.
+
+## Rules
+
+1. Read project-state.md at the start of each session to know what's happening.
+2. Search the vault/ folder before guessing or researching from scratch.
+3. Use skills/ for any repeatable task (code review, daily summary, etc.).
+4. At the end of each session, update project-state.md and write a daily log.
+5. Only save compact, long-term facts to memory. Save everything else as files.
+6. If you need to hand off work to another agent, drop a file in bridge/inbox/.
+
+## Folder Layout
+
+- vault/ — long-term knowledge (projects, references, concepts, decisions)
+- skills/ — repeatable procedures
+- logs/daily/ — session history
+- bridge/ — multi-agent handoffs
+- ideas/ — random thoughts worth keeping
+- reference/ — screenshots and analysis notes
+
+Your job is not to memorize everything. Your job is to know where to find it.
+```
+
+---
+
+# 29. 3-Day Quickstart
+
+Don't try to build all 30 sections at once. Do this:
+
+### Day 1 (30 minutes)
+
+1. Create the folder structure (mkdir commands in Section 27)
+2. Write `AGENT_PROFILE.md` — four lines: name, role, voice, one core value
+3. Write `project-state.md` — what project you're working on right now
+4. Tell your agent: "Read project-state.md before you respond"
+
+That's it. Day 1 done.
+
+### Day 2 (15 minutes)
+
+1. Think about one thing you did today that you'll do again
+2. Write it as a skill file: what it is, when to use it, the steps
+3. Write a daily log entry about what you accomplished
+4. Tell your agent: "Use skills/ when I ask you to do that thing"
+
+### Day 3 (10 minutes)
+
+1. Create a `bridge/inbox/` folder (even if you have one agent — use it for your own task queue)
+2. Write one vault note about something you learned
+3. Tell your agent: "Search vault/ before answering questions about that topic"
+
+After Day 3, the system is alive. Add to it naturally as you work.
+
+---
+
+# 30. Troubleshooting FAQ
+
+### "My agent ignores the vault"
+
+Your startup prompt isn't specific enough. Instead of "search the vault," say "Before answering any question about X, search vault/references/X.md first." Be explicit about when to check files.
+
+### "My agent's memory keeps filling up"
+
+You're putting project notes in memory instead of files. Memory should only hold: user preferences, environment facts, critical rules. Everything else — project plans, code explanations, task logs — goes in vault/ or logs/.
+
+### "Bridge folders stay empty"
+
+That's fine if you only have one agent. You can still use bridge/inbox/ as a task queue for yourself. Drop a note there when you think of something, process it when you're ready.
+
+### "I don't know what to put in skills/"
+
+If you've done a task twice, it's a skill. Start with:
+- How you review your own code
+- How you write a daily summary
+- How you onboard a new client
+- How you deploy your project
+- How you research a new topic
+
+One page, five steps each. That's all a skill needs to be.
+
+### "My agent still doesn't remember session to session"
+
+Most AI agents don't have persistent memory across sessions unless you give them a way to reload context. That's what project-state.md and logs/daily/ are for. At the start of each session, your agent reads:
+1. project-state.md — what was happening
+2. The latest daily log — what happened
+3. The relevant skill — how to do the task
+
+This replaces the need for the agent to "remember" anything. The files are the memory.
