@@ -1370,3 +1370,159 @@ Most AI agents don't have persistent memory across sessions unless you give them
 3. The relevant skill — how to do the task
 
 This replaces the need for the agent to "remember" anything. The files are the memory.
+
+---
+
+# 31. CLI Wrapper — Agent Control Panel
+
+Once your file system is stable, give your agent a simple CLI to control its tools.
+
+## Example Commands
+
+```bash
+agent status              # Show project state + recent activity
+agent snap                # Take a screenshot
+agent snap --region L T R B  # Screenshot a region
+agent snap --window NAME     # Screenshot a window
+agent record              # Start screen recording
+agent dl URL              # Download a video
+agent hear FILE           # Transcribe audio/video
+agent ideas               # List recent ideas
+agent idea "text"         # Save a new idea
+```
+
+## Why Build This
+
+- One interface for all your agent's tools
+- No remembering file paths or script names
+- Easy to extend with new commands
+- Can be used by other agents in your system
+
+---
+
+# 32. Prompt Library
+
+Store reusable prompts as organized files so you never lose a good one.
+
+## Folder Structure
+
+```txt
+prompts/
+  image-design/      # Album covers, logos, brand identities
+  flyers/            # Event promos, social media graphics
+  music/             # Lyrics, song structures, release workflows
+  game-dev/          # Game design docs, sprite rules, mechanics
+  web-dev/           # Code patterns, deployment, architecture
+  branding/          # Brand bibles, style guides, voice/tone
+  client-emails/     # Templates for proposals, invoices, follow-ups
+  debugging/         # Debug workflows, error patterns
+  zoro-system/       # Your agent's own system prompts and rules
+  agents/            # Handoff templates for multi-agent teams
+```
+
+## Prompt Format
+
+Each prompt file should include:
+
+```md
+# Prompt Name
+
+## Use Case
+When to use this prompt.
+
+## Variables
+- [VARIABLE 1]
+- [VARIABLE 2]
+
+## The Prompt
+The reusable text with [VARIABLE] placeholders.
+
+## Notes
+What works, what to avoid, style rules.
+```
+
+---
+
+# 33. Scripts & Automation Folder
+
+As your system grows, collect automation scripts in one place.
+
+## Suggested Layout
+
+```txt
+scripts/
+  briefcase.py        # Encrypted secrets vault
+  spitball.py         # Idea catcher
+  mirror.py           # Screenshot reference archive
+  end_of_session.py   # End-of-session automation
+  alarm.py            # System watchdog
+  audio_analyze.py    # Structure mapping + hook detection
+  agent-cli.py        # Unified CLI wrapper
+```
+
+## What Each Script Does
+
+| Script | Purpose |
+|--------|---------|
+| briefcase.py | Encrypt and store sensitive data (API keys, credentials) |
+| spitball.py | Save random ideas with timestamps |
+| mirror.py | Archive screenshots + analysis notes to a reference folder |
+| end_of_session.py | Run all end-of-session tasks: secret scan, cache check, daily log, relay |
+| alarm.py | Check disk space, cache sizes, project staleness |
+| audio_analyze.py | Transcribe + detect structure, hooks, and timing notes |
+| agent-cli.py | Unified command interface for all tools |
+
+---
+
+# 34. Full Filled-Out Agent Card (v3)
+
+```md
+# Agent Card — [Your Agent Name]
+
+## Identity
+Chill AI sidekick to [Your Name]. Operating on [Your Platform].
+
+## Capabilities
+
+### Media
+- 📸 Screenshot — full, region, window capture
+- 📹 Screen record — ffmpeg recording to D:\videos\
+- 📥 Video download — yt-dlp (YouTube, Facebook, any site)
+- 👂 Audio transcription — whisper (local, small model cached)
+- 🎵 Audio analysis — structure mapping, hook detection, timing notes
+
+### Security
+- 🔐 Briefcase — encrypted secrets vault (Fernet AES + HMAC)
+- 🔍 Auto-secret hunter — scan for new API keys at end of session
+
+### Organization
+- 💡 Spitball — auto-catches random ideas with timestamps
+- 🖼 Mirror — archives screenshots + analysis notes
+- 🎵 Soundtrack — logs music/videos by project
+- 🚨 Alarm — watches disk space, cache bloat, stale projects
+
+### Automation
+- 📋 End-of-session routine — secret scan, cache check, daily log, relay notes
+- 📤 Auto-relay to partner agents via bridge folder
+- ⏰ Cron jobs — scheduled system checks every 12h
+
+### Development
+- 🎮 Game dev — Unity 6, sprite sheets, pixel art
+- 🎛 Audio dev — JUCE, DAW plugins, DSP
+- 🌐 Web dev — Shopify themes, React, Tailwind, Firebase
+- 🤖 AI agents — Hermes, multi-agent team coordination
+
+## Storage Rules
+- 🏠 D: drive is primary — C: is system only
+- Create folders on D: as needed. Never default to C:.
+- All media, models, projects, logs, and cache go to D: drive.
+
+## Communication
+- Messaging platform: [Telegram/Discord/WhatsApp/etc.]
+- LLM provider: [Your provider]
+- Gateway runs as background service
+
+---
+
+*Last updated: YYYY-MM-DD*
+```
