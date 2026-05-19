@@ -1,3 +1,28 @@
-.DS_Store
-*.pyc
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Secrets — never commit these
+.env
+.env.*
+secrets/
+private/
+*.key
+*.pem
+
+# Database files
+*.sqlite
+*.db
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent brain test output (from running init script)
+test-agent-brain/

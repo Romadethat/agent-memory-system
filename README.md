@@ -1,100 +1,186 @@
 # Master AI Agent Memory System Template
 
-**Memory is for active context. Files are for permanent knowledge.**
+> **Memory is for active context. Files are for permanent knowledge.**
+
+![Version](https://img.shields.io/badge/version-v5.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.10%2B-yellow)
+![Status](https://img.shields.io/badge/status-starter--kit--ready-brightgreen)
 
 ---
 
-## Starter Kit — v5.0
+## What This Is
 
-This repo now includes a ready-to-use starter kit in addition to the full reference guide below.
+A file-based operating structure for AI assistants and local agents. It gives an agent:
 
-### Quick Start
+- A consistent identity
+- Persistent project state
+- User preferences
+- Reusable skills
+- Vault-based knowledge
+- Daily logs
+- Multi-agent handoff folders
+- One-command setup scripts
+
+## What Problem It Solves
+
+Without structure, agents forget what project they're on, what rules to follow, what files matter, what happened last session, and what other agents already did.
+
+This system fixes that by putting long-term knowledge in files the agent can search, read, and update when needed — instead of cramming everything into short-term memory.
+
+## Who This Is For
+
+- Local AI agent builders
+- Developers building assistant workflows
+- Multi-agent experimenters
+- Obsidian vault users who want AI context
+- Anyone tired of restarting from zero every session
+
+---
+
+## Quick Start
+
+### 1. Clone the repo
 
 ```bash
-# 1. Clone the repo
 git clone https://github.com/Romadethat/agent-memory-system.git
-
-# 2. Run the one-command installer
-python agent-memory-system/scripts/init-agent-brain.py --path ~/agent-brain
-
-# 3. Tell your agent:
-#    "Read ~/agent-brain/AGENT_PROFILE.md and ~/agent-brain/project-state.md"
-
-# 4. Start working. The system auto-logs.
+cd agent-memory-system
 ```
 
-**Windows users:** Use `--path D:/agent-brain` to keep data off your system drive.
+### 2. Create your agent brain
 
-### What You Get
+```bash
+# Default location (~/agent-brain)
+python scripts/init-agent-brain.py
+
+# Custom path (Linux/Mac)
+python scripts/init-agent-brain.py --path ~/my-brain
+
+# Custom path (Windows — keep off C: drive)
+python scripts/init-agent-brain.py --path D:/agent-brain
+```
+
+### 3. Tell your agent
+
+```
+Read ~/agent-brain/AGENT_PROFILE.md and ~/agent-brain/project-state.md
+```
+
+### 4. Start working
+
+The system auto-logs. At the end of each session:
+
+```bash
+python scripts/end_of_session.py "What I built and learned today"
+```
+
+---
+
+## What Gets Created
 
 ```
 agent-brain/
-├── AGENT_PROFILE.md      # Who the agent is — fill in your info
-├── MEMORY_RULES.md       # What goes in memory vs files
+├── AGENT_PROFILE.md      # Who the agent is
+├── MEMORY_RULES.md       # Memory vs files guide
 ├── project-state.md      # Current work — source of truth
 ├── user-rules.md         # Your preferences
-├── thinking-protocol.md  # How to approach tasks
+│
 ├── vault/                # Long-term knowledge
 ├── skills/               # Reusable workflows
 ├── logs/daily/           # Session history
+│
 ├── bridge/               # Multi-agent handoffs
-├── scripts/              # Automation (setup, EOS)
+│   ├── inbox/            # Incoming tasks
+│   ├── outbound/         # Completed responses
+│   ├── done/             # Archived tasks
+│   ├── blocked/          # Stuck items
+│   ├── logs/             # Bridge activity
+│   └── shared/           # Agent cards, protocols
+│
+├── scripts/              # Setup + session tools
 ├── prompts/              # Reusable prompt templates
-└── templates/            # File templates for new items
-```
-
-### Starter Kit Files
-
-| File | What it does |
-|------|-------------|
-| `templates/AGENT_PROFILE.md` | Identity card template |
-| `templates/MEMORY_RULES.md` | Memory vs file rules |
-| `templates/project-state.md` | Current work tracker |
-| `templates/user-rules.md` | User preferences |
-| `templates/thinking-protocol.md` | Agent thinking flow |
-| `templates/SKILL.md` | New skill template |
-| `scripts/init-agent-brain.py` | One-command installer |
-| `scripts/end_of_session.py` | Session closer |
-| `skills/code-review-checklist.md` | Example skill |
-| `skills/daily-summary.md` | Example skill |
-| `skills/project-handoff.md` | Example skill |
-| `skills/debugging-flow.md` | Example skill |
-| `docs/architecture.md` | Architecture diagram |
-
-### Agent Card for Multi-Agent Discovery
-
-Every plugin and agent in your system needs an AGENT_CARD.md so other agents can discover capabilities without asking:
-
-```md
-# Agent Card: your-agent-name
-## Role
-What this agent does.
-## Can Access
-- paths/it/can/read
-## Commands
-| Command | What it does |
-|---------|-------------|
-## Partner Agents
-How other agents can use this plugin.
-## Created
-YYYY-MM-DD
+└── templates/            # Starter file templates
 ```
 
 ---
 
-### Full Reference (43 sections)
+## System Flow
 
-The complete reference guide follows below. It covers every component in detail:
+```
+User Request
+     │
+     ▼
+Read AGENT_PROFILE.md + project-state.md
+     │
+     ▼
+Search vault/ for relevant knowledge
+     │
+     ▼
+Load skill from skills/ if needed
+     │
+     ▼
+Follow MEMORY_RULES.md (memory vs files)
+     │
+     ▼
+Execute task
+     │
+     ▼
+Update logs/daily/ + project-state.md
+     │
+     ▼
+Create bridge/ handoff if needed
+```
 
-1. [Agent Identity](templates/AGENT_PROFILE.md) — Who the agent is
-2. [Memory Rules](templates/MEMORY_RULES.md) — What to remember vs save as files
-3. [Project State](templates/project-state.md) — Current work tracking
-4. [User Rules](templates/user-rules.md) — Your preferences
-5. [Thinking Protocol](templates/thinking-protocol.md) — How the agent thinks
-6. Vault — Long-term knowledge base
-7. Skills — Reusable workflows
-8. Daily Logs — Session history
-9. Bridge — Multi-agent handoffs
-10-43. Advanced patterns (CLI, Plugins, API, Signals, etc.)
+See [docs/architecture.md](docs/architecture.md) for the full diagram.
 
-> **Note:** The full 43-section reference guide is preserved in `docs/full-reference-guide.md`. It includes example-specific content from the author's personal setup (Zoro ecosystem) — use it as inspiration, adapt to your own agent.
+---
+
+## Examples
+
+| Example | What it shows |
+|---------|--------------|
+| [basic-agent-brain](examples/basic-agent-brain/) | Complete solo agent setup with profile, rules, state, and preferences |
+| [multi-agent-bridge](examples/multi-agent-bridge/) | Multi-agent handoff workflow with inbox/outbound/done lifecycle |
+| [example-session](examples/example-session/) | Before/after comparison of a session with the system |
+| [zoro-style-agent-card](examples/zoro-style-agent-card.md) | Agent card for multi-agent discovery |
+
+---
+
+## Documentation
+
+| Doc | What's inside |
+|-----|--------------|
+| [docs/architecture.md](docs/architecture.md) | System flow diagram and directory structure |
+| [docs/full-reference-guide.md](docs/full-reference-guide.md) | Deep 43-section reference (includes personal examples) |
+| [docs/windows-setup.md](docs/windows-setup.md) | Windows-specific path and env setup |
+| [docs/obsidian-setup.md](docs/obsidian-setup.md) | Using your agent brain as an Obsidian vault |
+| [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) | Multi-agent coordination patterns |
+| [docs/security-notes.md](docs/security-notes.md) | Safe usage guidance |
+
+---
+
+## Security
+
+This system stores project notes, preferences, and logs as plain-text files. Do not commit secrets, API keys, or passwords to any public repo.
+
+See [SECURITY.md](SECURITY.md) for details.
+
+## Contributing
+
+Contributions welcome — skills, templates, docs, scripts, examples.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## Roadmap
+
+- Demo GIF showing agent startup flow
+- More example skills (design review, deployment, research)
+- MCP server example for agent tool integration
+- CLI wrapper for quicker initialization
+- Obsidian setup walkthrough video
+- Testing script for generated agent brains
+- Package installer (pip, homebrew)
+
+## License
+
+MIT — see [LICENSE](LICENSE).
