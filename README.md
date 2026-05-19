@@ -59,7 +59,7 @@ agent-brain/
 | `skills/daily-summary.md` | Example skill |
 | `skills/project-handoff.md` | Example skill |
 | `skills/debugging-flow.md` | Example skill |
-| `assets/architecture.md` | Architecture diagram |
+| `docs/architecture.md` | Architecture diagram |
 
 ### Agent Card for Multi-Agent Discovery
 
@@ -97,4 +97,4 @@ The complete reference guide follows below. It covers every component in detail:
 9. Bridge — Multi-agent handoffs
 10-43. Advanced patterns (CLI, Plugins, API, Signals, etc.)
 
-> **Note:** The full 43-section reference guide is preserved in `reference/full-reference-guide.md`. It includes example-specific content from the author's personal setup (Zoro ecosystem) — use it as inspiration, adapt to your own agent.
+> **Note:** The full 43-section reference guide is preserved in `docs/full-reference-guide.md`. It includes example-specific content from the author's personal setup (Zoro ecosystem) — use it as inspiration, adapt to your own agent.

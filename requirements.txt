@@ -1,0 +1,4 @@
+# Agent Memory System — Starter Kit
+# No external dependencies required.
+# The init script and EOS script use only Python stdlib.
+# Optional: pip install watchfiles (for file watching)
