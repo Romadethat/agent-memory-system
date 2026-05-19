@@ -1,5 +1,7 @@
 # Master AI Agent Memory System Template
 
+> **Note:** This reference guide documents one specific implementation (the Zoro ecosystem). It includes personal examples, specific tool names, and project references. Adapt the patterns to your own agent — the architecture is universal, the examples are not.
+
 ## Purpose
 
 This system is for building an AI assistant or local agent that can remember, resume work, follow repeatable workflows, and improve over time without stuffing everything into short-term memory.

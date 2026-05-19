@@ -61,9 +61,9 @@ agent-brain/
 | `skills/debugging-flow.md` | Example skill |
 | `assets/architecture.md` | Architecture diagram |
 
-### Agent Card for MCP/Antigravity
+### Agent Card for Multi-Agent Discovery
 
-Every plugin and agent needs an AGENT_CARD.md for multi-agent discovery:
+Every plugin and agent in your system needs an AGENT_CARD.md so other agents can discover capabilities without asking:
 
 ```md
 # Agent Card: your-agent-name
@@ -97,4 +97,4 @@ The complete reference guide follows below. It covers every component in detail:
 9. Bridge — Multi-agent handoffs
 10-43. Advanced patterns (CLI, Plugins, API, Signals, etc.)
 
-*[The original 43-section reference continues below — see the full document for complete details]*
+> **Note:** The full 43-section reference guide is preserved in `reference/full-reference-guide.md`. It includes example-specific content from the author's personal setup (Zoro ecosystem) — use it as inspiration, adapt to your own agent.
