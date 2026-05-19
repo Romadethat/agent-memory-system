@@ -2063,3 +2063,115 @@ handlers = {
 - Agent cards let other AIs discover tools without asking you
 - CLI stays clean — add a plugin, add one line
 - Share plugins across a multi-agent team
+
+---
+
+# 42. API Server Pattern
+
+Once your agent has tools and plugins, expose them as an HTTP API so any app can connect.
+
+## Architecture
+
+```txt
+┌─────────────────┐     stdio MCP      ┌──────────────┐
+│  Antigravity     │◄────────────────────│ Zoro MCP      │
+│  (agentic IDE)   │                     │ Server (v2)   │
+└─────────────────┘                     └──────┬───────┘
+                                              │
+┌─────────────────┐     HTTP REST + SSE      │
+│  Claude Desktop  │◄─────────────────────────┤
+│  Cursor          │                          │
+│  Custom apps     │                          │
+│  Other agents    │                          │
+└─────────────────┘                          │
+                                     ┌───────┴────────┐
+                                     │  Zoro API v2    │
+                                     │  FastAPI + SSE   │
+                                     │  Port 8080       │
+                                     └────────────────┘
+```
+
+## Key Endpoints
+
+```txt
+GET  /health                  # Health check (no auth)
+GET  /.well-known/agents      # Tool discovery (no auth)
+GET  /mcp                     # MCP SSE transport (no auth)
+POST /tools/{name}            # Execute a tool
+GET  /tasks/{id}              # Poll async task result
+GET  /docs                    # Swagger UI docs
+```
+
+## Async Tasks
+
+Long-running operations (transcriptions, downloads) return a task ID:
+
+```json
+POST /tools/transcribe  →  { "task_id": "task_abc123", "status": "processing" }
+GET /tasks/task_abc123  →  { "status": "complete", "result": "..." }
+```
+
+## Auth Options
+
+| Mode | Usage |
+|------|-------|
+| `--no-auth` | Development, trusted network |
+| `--key=mykey` | Bearer token auth for production |
+
+Antigravity config for SSE transport:
+
+```json
+{
+  "zoro-api": {
+    "serverUrl": "http://localhost:8080/mcp"
+  }
+}
+```
+
+---
+
+# 43. Multi-Agent Signal Protocol
+
+When you have multiple agents, they need to ping each other when work is ready.
+
+## Signal Files
+
+```txt
+bridge/signals/SIGNAL-sender-timestamp.md
+```
+
+Format:
+
+```md
+SIGNAL: Sender → Recipient
+Time: YYYY-MM-DD HH:MM TZ
+Action: Brief description
+Content: One-liner summary
+```
+
+## Relay Files
+
+```txt
+bridge/inbound/[P0-RELAY]-description.md
+```
+
+## Agent Cards
+
+Every plugin and agent needs an AGENT_CARD.md in `bridge/shared/agent-cards/` so other agents can discover their capabilities without asking.
+
+## Watchdog Automation
+
+A cron job checks `bridge/signals/` every 5 minutes, classifies signals by recipient, and notifies the target agent (terminal alert for local, CLI ping for remote).
+
+```bash
+# Install the watchdog
+hermes cron create --name bridge-watchdog --schedule "every 5m" \
+  --prompt "Check bridge/signals/ for new files and notify recipients"
+```
+
+---
+
+**Memory is for active context. Files are for permanent knowledge.**
+
+*Last updated: YYYY-MM-DD*
+```
