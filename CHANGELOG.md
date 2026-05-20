@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.1.0] — 2026-05-20
+
+### Added
+
+- Cross-machine relay bridge documentation for Google Drive / cloud sync workflows
+- Optional Multi-Agent Relay Ingestion Layer for cloud-to-local agent handoffs
+- Canonical relay format guidance using plain `.md` or `.txt` files plus matching `.ready` markers
+- Agent card guidance for multi-agent discovery
+- Protocol file guidance for relay laws, naming conventions, message types, ready-marker rules, and safety rules
+- Updated relay message header fields: Status, Protocol Version, Authority Level, No Secrets Included, and Real-World Action Authorized
+- Documentation for the `.gdoc` limitation and the rclone-based ingestion fix
+
+### Changed
+
+- README now points users to the advanced relay bridge pattern
+- docs/multi-agent-bridge.md now covers both local bridges and cross-machine relay ingestion
+
 ## [5.0.0] — 2026-05-18
 
 ### Major
