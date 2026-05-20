@@ -2665,7 +2665,153 @@ Quick reference:
 
 ---
 
+# 29. Agent Index System (Optional Advanced Module)
+
+When an agent has more than a handful of projects, memory entries, skills, and templates, raw context memory is not enough. An **index system** gives the agent a file-based navigation map so it knows where to look first.
+
+## Core Principle
+
+> Never answer project-specific questions from raw memory alone when project files or index files exist.
+
+## Recommended Structure
+
+```
+agent-index/
+├── 00_SYSTEM/
+│   ├── INDEX_MASTER.md         # Top-level navigation map
+│   ├── ZORO_BOOT.md            # Session start sequence
+│   └── SEARCH_PROTOCOL.md      # Default search order
+│
+├── 01_PROJECTS/
+│   ├── PROJECT_INDEX.md        # All projects at a glance
+│   ├── Project-A/              # Per-project folders
+│   │   ├── project-state.md    # Current focus, blockers
+│   │   ├── project-index.md    # Navigation for this project
+│   │   ├── tasks.md            # Open/completed tasks
+│   │   └── decisions.md        # Important decisions
+│   └── Project-B/
+│
+├── 02_MEMORY/
+│   ├── MEMORY_INDEX.md         # Memory categories
+│   ├── user-preferences.md     # How the user likes things
+│   ├── brand-rules.md          # Brand identity rules
+│   ├── design-rules.md         # Visual aesthetic rules
+│   ├── coding-rules.md         # Code delivery conventions
+│   └── ai-agent-rules.md       # Agent team operating rules
+│
+├── 03_SKILLS/
+│   └── SKILL_INDEX.md          # All skills indexed by purpose
+│
+├── 04_TEMPLATES/
+│   ├── TEMPLATE_INDEX.md
+│   ├── project-template.md
+│   ├── relay-template.md
+│   ├── task-template.md
+│   ├── decision-template.md
+│   └── memory-template.md
+│
+├── 05_REFERENCES/
+│   └── REFERENCE_INDEX.md      # Tools, commands, environment
+│
+├── 06_INBOX/
+│   ├── raw/                    # New files go here first
+│   ├── needs-review/           # Scanned but not processed
+│   └── processed/              # Filed into the right place
+│
+└── 99_ARCHIVE/                 # Old projects, deprecated content
+```
+
+## Boot Protocol
+
+When the agent starts a new session, it should:
+
+1. Read `00_SYSTEM/INDEX_MASTER.md` — get the navigation map
+2. Read `01_PROJECTS/PROJECT_INDEX.md` — see all active projects
+3. Read the active P0 project's `project-state.md` — understand current focus
+4. Check `06_INBOX/raw/` and `06_INBOX/needs-review/` — process any new items
+5. Load relevant memory files from `02_MEMORY/` — but only what's needed for the current task
+6. Load needed skills from `03_SKILLS/` — as required by the task
+
+## Search Protocol
+
+Default search order when the user asks about a project:
+
+1. Check `00_SYSTEM/INDEX_MASTER.md`
+2. Check `01_PROJECTS/PROJECT_INDEX.md`
+3. Open the project's `project-state.md`
+4. Open the project's `project-index.md`
+5. Check `tasks.md`, `decisions.md`, and `changelog.md`
+6. Check relevant memory files in `02_MEMORY/`
+7. Check inbox if the user recently dropped a file
+8. Ask the user only if none of the above answer the question
+
+## Memory System
+
+Memory files store stable, reusable facts. Tasks are not memories.
+One-off logs are not memories.
+
+### Priority Levels
+- **P0** — Critical rules that should almost always affect behavior
+- **P1** — Important preferences and project conventions
+- **P2** — Useful context, but not always required
+- **P3** — Reference-only or low-priority context
+
+### Memory Template
+
+```md
+## Memory: [Memory Name]
+
+**Category:** User Preference / Brand Rule / Design Rule / Coding Rule / Agent Rule
+**Priority:** P0 / P1 / P2 / P3
+
+**Summary:**
+Short version of the memory.
+
+**Full Details:**
+Detailed explanation.
+
+**Applies To:**
+- Project: [Name]
+
+**Related Files:**
+- [File 1]
+
+**Last Updated:** YYYY-MM-DD
+```
+
+## Clutter Prevention Rules
+
+1. **Tasks are not memories** — Tasks go inside project folders.
+2. **Preferences are memory** — Long-term user rules go in `02_MEMORY/`.
+3. **Repeatable workflows are skills** — If the agent will do it more than twice, make a skill.
+4. **Raw files go to inbox first** — Do not dump random files into project folders.
+5. **Every project needs a `project-state.md`** — That is the source of truth.
+6. **Every big decision goes in `decisions.md`** — Prevents repeated debates.
+7. **Archive, do not delete** — Old projects go to `99_ARCHIVE/`.
+
+## CLI Integration
+
+Once the manual structure is proven, a CLI wrapper makes it faster:
+
+```bash
+# Commands an agent might have:
+agent index                    # Run boot sequence
+agent index search <query>     # Search all index files
+agent index inbox              # Check for new items
+agent new-project "Name"       # Scaffold a new project folder
+agent memory-add               # Add a memory entry
+```
+
+## Why This Works
+
+Most agents try to hold everything in their context window. That works for simple setups but breaks once you have 5+ projects, 10+ skills, and a growing set of user preferences.
+
+An index system inverts the problem: instead of remembering everything, the agent only needs to remember where to look. The files do the remembering.
+
+
+---
+
 **Memory is for active context. Files are for permanent knowledge.**
 
-*Last updated: 2026-05-20 — 45+ sections (added Cross-Machine Relay Bridge at #44 + Agent Onboarding + Project Index + Agent Relay Laws + Known Limitations)*
+*Last updated: 2026-05-20 — 46 sections (added Agent Index System at #29, Cross-Machine Relay Bridge at #44)*
 ```

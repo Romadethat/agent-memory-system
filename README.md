@@ -2,7 +2,7 @@
 
 > **Memory is for active context. Files are for permanent knowledge.**
 
-![Version](https://img.shields.io/badge/version-v5.1.0-blue)
+![Version](https://img.shields.io/badge/version-v5.2.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.10%2B-yellow)
 ![Status](https://img.shields.io/badge/status-starter--kit--ready-brightgreen)
@@ -186,7 +186,7 @@ See [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) and [docs/full-refe
 | Doc | What's inside |
 |-----|--------------|
 | [docs/architecture.md](docs/architecture.md) | System flow diagram and directory structure |
-| [docs/full-reference-guide.md](docs/full-reference-guide.md) | Deep 45+ section reference, including cross-machine relay patterns |
+| [docs/full-reference-guide.md](docs/full-reference-guide.md) | Deep 46-section reference, including cross-machine relay patterns and agent index system |
 | [docs/windows-setup.md](docs/windows-setup.md) | Windows-specific path and env setup |
 | [docs/obsidian-setup.md](docs/obsidian-setup.md) | Using your agent brain as an Obsidian vault |
 | [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) | Multi-agent coordination and relay ingestion patterns |

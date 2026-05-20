@@ -1,5 +1,23 @@
 # Changelog
 
+## [5.2.0] — 2026-05-20
+
+### Added
+
+- Agent Index System (section #29) — file-based navigation map for multi-project agents
+- Boot protocol for session startups
+- Search protocol for finding answers before asking
+- Memory indexing system with P0-P3 priority levels
+- Template system for projects, relays, tasks, decisions, and memories
+- Inbox processing workflow (raw → needs-review → processed)
+- Clutter prevention rules for maintaining a clean agent brain
+- CLI integration pattern for index management
+
+### Changed
+
+- docs/full-reference-guide.md expanded from 45 to 46 sections
+- README docs table updated
+
 ## [5.1.0] — 2026-05-20
 
 ### Added
