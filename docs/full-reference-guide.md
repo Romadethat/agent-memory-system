@@ -2814,4 +2814,3 @@ An index system inverts the problem: instead of remembering everything, the agen
 **Memory is for active context. Files are for permanent knowledge.**
 
 *Last updated: 2026-05-20 — 46 sections (added Agent Index System at #29, Cross-Machine Relay Bridge at #44)*
-```
