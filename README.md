@@ -2,7 +2,7 @@
 
 > **Memory is for active context. Files are for permanent knowledge.**
 
-![Version](https://img.shields.io/badge/version-v5.2.0-blue)
+![Version](https://img.shields.io/badge/version-v5.3.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.10%2B-yellow)
 ![Status](https://img.shields.io/badge/status-starter--kit--ready-brightgreen)
@@ -86,11 +86,21 @@ agent-brain/
 ├── AGENT_PROFILE.md      # Who the agent is
 ├── MEMORY_RULES.md       # Memory vs files guide
 ├── project-state.md      # Current work — source of truth
+├── session-state.md      # Session continuity (survives drops)
 ├── user-rules.md         # Your preferences
+├── thinking-protocol.md  # How the agent reasons
+├── simulation-protocol.md# How the agent thinks ahead
+├── end-session-checklist.md # Save button
+├── boot-protocol.md      # Session startup sequence
 │
 ├── vault/                # Long-term knowledge
 ├── skills/               # Reusable workflows
+├── thoughts/             # Auto-captured learning (raw → consolidated → patterns)
 ├── logs/daily/           # Session history
+│
+├── index/                # Navigation maps (projects, skills, templates)
+├── templates/            # Reusable file blueprints
+├── prompts/              # Reusable prompt templates
 │
 ├── bridge/               # Multi-agent handoffs
 │   ├── inbox/            # Incoming tasks
@@ -98,12 +108,15 @@ agent-brain/
 │   ├── done/             # Archived tasks
 │   ├── blocked/          # Stuck items
 │   ├── logs/             # Bridge activity
-│   └── shared/           # Agent cards, protocols
+│   ├── shared/           # Agent cards, protocols
+│   └── signals/          # Agent ping files
 │
+├── crew-agents/          # Agent cards for every capability
 ├── scripts/              # Setup + session tools
-├── prompts/              # Reusable prompt templates
-└── templates/            # Starter file templates
-
+├── briefcase/            # Encrypted secrets
+├── ideas/                # Random thought catcher
+└── reference/            # Screenshot + analysis archive
+```
 For advanced multi-agent setups, an optional relay structure can be added:
 
 ```
@@ -186,7 +199,7 @@ See [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) and [docs/full-refe
 | Doc | What's inside |
 |-----|--------------|
 | [docs/architecture.md](docs/architecture.md) | System flow diagram and directory structure |
-| [docs/full-reference-guide.md](docs/full-reference-guide.md) | Deep 46-section reference, including cross-machine relay patterns and agent index system |
+| [docs/full-reference-guide.md](docs/full-reference-guide.md) | Deep 58-section reference, including thought pipeline, agent crew system, session state, index system, boot protocol, meta-rules, and cross-machine relay patterns |
 | [docs/windows-setup.md](docs/windows-setup.md) | Windows-specific path and env setup |
 | [docs/obsidian-setup.md](docs/obsidian-setup.md) | Using your agent brain as an Obsidian vault |
 | [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) | Multi-agent coordination and relay ingestion patterns |

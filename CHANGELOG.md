@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.3.0] — 2026-05-20
+
+### Added
+- **Thought Pipeline (section #49)** — auto-capture learning with tag co-occurrence, multi-day chains, weekly consolidation
+- **Agent Crew System (section #50)** — multi-agent ecosystem with agent cards, gap analysis, roster management
+- **Session State Persistence (section #51)** — survive dropped connections with session-state.md
+- **Index & Navigation System (section #52)** — project/skill/template/reference indexes for instant file-finding
+- **Boot Protocol (section #53)** — standardized session startup sequence
+- **Expanded Meta-Rules (section #54)** — 10 operating principles: double check, go all the way, text over brain, template first, execute don't ask, quality > speed, study before building, no rush patches, match tempo, drop it
+- Updated Folder Structure v4 (section #55), Master Summary (section #56), Startup Prompt (section #57), 3-Day Quickstart (section #58)
+- Added new folder sections to README (thoughts/, index/, crew-agents/, briefcase/, ideas/, reference/)
+
+### Changed
+- Full reference guide grew from 46 → 58 sections
+- Folder structure expanded from 12 to 20+ elements with new patterns
+
 ## [5.2.0] — 2026-05-20
 
 ### Added
