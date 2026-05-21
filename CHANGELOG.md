@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.1] — 2026-05-20
+
+### Changed
+- **Template generalization** — All personal Ro/Zoro-specific references replaced with generic agent names (AGENT_A, AGENT_B, Planner Agent, Worker Agent, Code Agent)
+- **README restructured** — Added Example Workflow, How to Customize, and expanded Security section with commit/no-commit guidance
+- **.gitignore updated** — Added protection for all private agent data folders (AGENT_PROFILE.md, logs/, vault/, bridge/, briefcase/, ideas/, thoughts/, reference/, crew-agents/)
+- **Full reference guide cleaned** — Removed hardcoded personal names, paths, and team-specific workflow examples
+
 ## [5.3.0] — 2026-05-20
 
 ### Added

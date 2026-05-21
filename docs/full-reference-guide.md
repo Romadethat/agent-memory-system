@@ -1416,7 +1416,7 @@ prompts/
   branding/          # Brand bibles, style guides, voice/tone
   client-emails/     # Templates for proposals, invoices, follow-ups
   debugging/         # Debug workflows, error patterns
-  zoro-system/       # Your agent's own system prompts and rules
+  agent-system/       # Your agent's own system prompts and rules
   agents/            # Handoff templates for multi-agent teams
 ```
 
@@ -1535,13 +1535,13 @@ If you have more than one AI agent, they need a way to talk to each other withou
 ```txt
 bridge/
   inbox/          # Incoming tasks, blueprints, instructions
-    from-ro/      # Direct from you
-    from-atlas/   # From your planning agent
-    from-antigravity/ # From your coding agent
+    from-user/    # Direct from you
+    from-planner/ # From your planning agent
+    from-coder/   # From your coding agent
   outbound/       # Completed work, reports, questions
-    to-ro/
-    to-atlas/
-    to-antigravity/
+    to-user/
+    to-planner/
+    to-coder/
   done/           # Completed and archived tasks
   blocked/        # Tasks that can't proceed
   shared/         # Reference files all agents should see
@@ -1606,14 +1606,14 @@ What this agent does.
 
 ```
 You have an idea
-→ drop it in bridge/inbox/from-ro/
-→ Atlas picks it up, creates a blueprint
-→ drops blueprint in bridge/inbox/from-atlas/
-→ Zoro reads it, checks project-state, skills, vault
-→ routes implementation work to Antigravity if needed
-→ Antigravity builds it
-→ Zoro verifies
-→ results go to bridge/outbound/to-ro/
+→ drop it in bridge/inbox/from-user/
+→ Planner Agent picks it up, creates a blueprint
+→ drops blueprint in bridge/inbox/from-planner/
+→ Worker Agent reads it, checks project-state, skills, vault
+→ routes implementation work to Code Agent if needed
+→ Code Agent builds it
+→ Worker Agent verifies
+→ results go to bridge/outbound/to-user/
 → knowledge saved to vault/
 → project-state.md updated
 ```
@@ -2074,8 +2074,8 @@ Once your agent has tools and plugins, expose them as an HTTP API so any app can
 
 ```txt
 ┌─────────────────┐     stdio MCP      ┌──────────────┐
-│  Antigravity     │◄────────────────────│ Zoro MCP      │
-│  (agentic IDE)   │                     │ Server (v2)   │
+│  Code Agent     │◄────────────────────│ Worker MCP      │
+│  (agentic IDE)   │                     │ Server          │
 └─────────────────┘                     └──────┬───────┘
                                               │
 ┌─────────────────┐     HTTP REST + SSE      │
@@ -2085,7 +2085,7 @@ Once your agent has tools and plugins, expose them as an HTTP API so any app can
 │  Other agents    │                          │
 └─────────────────┘                          │
                                      ┌───────┴────────┐
-                                     │  Zoro API v2    │
+                                     │  Agent API v2   │
                                      │  FastAPI + SSE   │
                                      │  Port 8080       │
                                      └────────────────┘
@@ -2122,7 +2122,7 @@ Antigravity config for SSE transport:
 
 ```json
 {
-  "zoro-api": {
+  "agent-api": {
     "serverUrl": "http://localhost:8080/mcp"
   }
 }
@@ -2165,7 +2165,7 @@ A cron job checks `bridge/signals/` every 5 minutes, classifies signals by recip
 
 ```bash
 # Install the watchdog
-hermes cron create --name bridge-watchdog --schedule "every 5m" \
+agent cron create --name bridge-watchdog --schedule "every 5m" \
   --prompt "Check bridge/signals/ for new files and notify recipients"
 ```
 
@@ -2201,8 +2201,8 @@ YYYY-MM-DD-FROM-to-TO-TYPE-description.md
 ```
 
 Examples:
-- `2026-05-20-ZORO-to-IQ-LESSON-verification-method.md`
-- `2026-05-20-IQ-to-ZORO-ANSWER-evidence-schema.md`
+- `2026-05-20-AGENT_A-to-AGENT_B-LESSON-verification-method.md`
+- `2026-05-20-AGENT_B-to-AGENT_A-ANSWER-evidence-schema.md`
 
 ## Message Types
 
@@ -2266,7 +2266,7 @@ G:\.shortcut-targets-by-id\[THE_FOLDER_ID]\
 ```
 The folder ID is the long alphanumeric string in the share URL.
 
-**Lesson learned the hard way:** Tony shared the folder with Ro. Ro accepted the invite. Nothing showed up for 10+ minutes. The fix was adding a shortcut from the browser — instant sync after that.
+**Lesson learned the hard way:** When someone shares a Drive folder with you, it does NOT appear in your local Drive automatically even after accepting the invite. The fix is opening the share link in your browser and adding a shortcut — instant sync after that.
 
 ## What Makes This Different From a Local Bridge
 
@@ -2318,11 +2318,11 @@ When a cloud-only agent (like Atlas) drops a Google Doc in the shared Drive root
 
 ```bash
 # Discover new docs
-rclone lsjson gdrive: --include "*ATLAS-to-ZORO*"
+rclone lsjson gdrive: --include "*AGENT_A-to-AGENT_B*"
 
 # Export as text and save to relay inbox with .ready marker
 # Wrapped as a CLI command:
-zoro gdoc --inbox "partial-name-match"
+agent gdoc --inbox "partial-name-match"
 ```
 
 This pattern works for any agent that can create files in a shared Drive, even if those files aren't native markdown. The ingestion agent handles the conversion.
@@ -2345,10 +2345,10 @@ Each agent in the relay should have a **card** — a markdown file describing wh
 ```
 relay/
 ├── agents/
-│   ├── ZORO.md
-│   ├── ATLAS.md
-│   ├── DEX.md
-│   ├── ANTIGRAVITY.md
+│   ├── AGENT_A.md
+│   ├── AGENT_B.md
+│   ├── AGENT_C.md
+│   ├── AGENT_D.md
 │   └── TEMPLATE.md
 ```
 
@@ -2433,12 +2433,12 @@ The **Status** field tells humans and agents where the message is in the workflo
 ## Example Relay Message
 
 ```md
-# 2026-05-20-IQ-to-ZORO-LESSON-verified-learning.md
+# 2026-05-20-AGENT_A-to-AGENT_B-LESSON-verified-learning.md
 
-IQ ADVISORY EXPORT — REVIEW BEFORE USE
+AGENT_A ADVISORY EXPORT — REVIEW BEFORE USE
 
-From: IQ
-To: Zoro
+From: AGENT_A
+To: AGENT_B
 Date: 2026-05-20
 Type: LESSON
 Authority level: Advisory only
@@ -2485,7 +2485,7 @@ Atlas (ChatGPT) can create Google Docs through Drive tools, but those land as `.
 
 ```bash
 # Example: local agent reads .gdoc and places .md + .ready in inbox
-zoro gdoc --inbox "message-topic"
+agent gdoc --inbox "message-topic"
 ```
 
 This eliminates the manual export step. The ingestion layer handles format conversion.
@@ -2679,7 +2679,7 @@ When an agent has more than a handful of projects, memory entries, skills, and t
 agent-index/
 ├── 00_SYSTEM/
 │   ├── INDEX_MASTER.md         # Top-level navigation map
-│   ├── ZORO_BOOT.md            # Session start sequence
+│   ├── AGENT_BOOT.md            # Session start sequence
 │   └── SEARCH_PROTOCOL.md      # Default search order
 │
 ├── 01_PROJECTS/
@@ -3153,11 +3153,11 @@ Store all agent cards in a shared location:
 
 ```txt
 bridge/shared/agent-cards/
-  ZORO.md
-  ATLAS.md
-  ANTIGRAVITY.md
+  AGENT_A.md
+  AGENT_B.md
+  AGENT_C.md
   CODEX.md
-  master-ui.md
+  design-plugin.md
   repo-manager.md
   ...
 ```

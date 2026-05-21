@@ -174,10 +174,10 @@ If stuck: → Move to `bridge/blocked/` with a note about why
 
 ### Cross-machine relay
 
-1. Atlas creates a Google Doc in `G:\My Drive\` root
-2. Zoro runs `zoro gdoc --inbox "topic"` to discover and ingest
+1. Cloud Agent creates a Google Doc in a shared Drive folder
+2. Local Worker Agent runs `agent gdoc --inbox "topic"` to discover and ingest
 3. rclone exports the doc → text extracted → `.md` + `.ready` placed in `relay/inbox/`
-4. Zoro reads, processes, and responds
+4. Worker Agent reads, processes, and responds
 5. Response placed in `relay/outbox/`, original archived
 
 ---

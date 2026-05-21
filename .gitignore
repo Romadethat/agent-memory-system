@@ -26,3 +26,22 @@ Thumbs.db
 
 # Agent brain test output (from running init script)
 test-agent-brain/
+
+# Agent private data — never commit these
+AGENT_PROFILE.md
+project-state.md
+user-rules.md
+session-state.md
+thinking-protocol.md
+simulation-protocol.md
+end-session-checklist.md
+boot-protocol.md
+
+logs/
+vault/
+bridge/
+briefcase/
+ideas/
+thoughts/
+reference/
+crew-agents/
