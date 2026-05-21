@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.4.0] — 2026-05-21
+
+### Added
+- **Thinking Protocol Phase 0: Observe** — Added "Look Before You Think" step before Orient. Agents are instructed to screenshot/analyze before acting, read output as design not data, and compare expectations to reality. Includes CLI screenshot guidance.
+- **Observe phase documented** in both full-reference-guide.md and standalone template
+
 ## [5.3.1] — 2026-05-20
 
 ### Changed

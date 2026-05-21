@@ -586,6 +586,28 @@ This gives the agent a repeatable reasoning flow.
 ```md
 # Thinking Protocol
 
+## 0. Observe (Look Before You Think)
+Before orienting toward any task, **actually look at what's in front of you.**
+
+This is the most skipped step and the most important. Agents jump to "what do I do" without
+first asking "what am I looking at."
+
+**If you can take a screenshot (CLI agents): take one.** Don't ask the user what something
+looks like — you have eyes. Screenshot the terminal, the UI, the error — then analyze it.
+
+**If you're looking at code/output/files:** read them like a designer, not a data processor.
+Headers, colors, framing, alignment — the stuff you'd normally skip because it's "decoration"
+is often where the answer lives.
+
+**Compare to expectation.** What do you expect to see? What's actually there? The gap is
+the answer.
+
+**If you find yourself thinking "yeah yeah, same old thing" — stop.** That's the danger zone.
+The thing you're glossing over is probably the thing that changed.
+
+Applied everywhere: screenshots, code diffs, error messages, UI designs, audio waveforms,
+conversations. Everywhere you scan instead of see.
+
 ## 1. Orient
 Understand what the user actually wants.
 

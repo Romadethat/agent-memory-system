@@ -2,7 +2,7 @@
 
 > **Memory is for active context. Files are for permanent knowledge.**
 
-![Version](https://img.shields.io/badge/version-v5.3.1-blue)
+![Version](https://img.shields.io/badge/version-v5.4.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.10%2B-yellow)
 ![Status](https://img.shields.io/badge/status-starter--kit--ready-brightgreen)
