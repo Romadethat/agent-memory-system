@@ -43,6 +43,12 @@ For multi-agent setups, it also gives agents a file-based bridge so they can exc
 
 ## Quick Start
 
+### 0. Start here — not at the deep end
+
+| Guide | What it's for |
+|-------|---------------|
+| [docs/start-here.md](docs/start-here.md) | Beginner-friendly setup path showing what to use first and what to add later |
+
 ### 1. Clone the repo
 
 ```bash

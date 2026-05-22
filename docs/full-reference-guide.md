@@ -1,5 +1,8 @@
 # Master AI Agent Memory System Template
 
+> New here? Start with [docs/start-here.md](start-here.md). This file is the
+> complete deep reference, not the recommended first page for beginners.
+
 ## Purpose
 
 This system is for building an AI assistant or local agent that can remember, resume work, follow repeatable workflows, and improve over time without stuffing everything into short-term memory.
