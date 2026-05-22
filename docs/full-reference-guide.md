@@ -652,7 +652,17 @@ Ask:
 - Are there edge cases?
 - Is anything unsafe?
 
-## 6. Reflect
+## 6. Synthesize
+Find cross-project patterns.
+
+Ask:
+- What shape does this knowledge have?
+- Have I seen this pattern before in another project?
+- Is this a data flow pattern, a sync pattern, an anti-pattern?
+- Does any other active project share this problem?
+- Should a note go in the cross-project pattern journal?
+
+## 7. Reflect
 Save important learning.
 
 Update:
@@ -660,6 +670,7 @@ Update:
 - daily log
 - skill files
 - vault notes
+- pattern journal if cross-project connection found
 - memory only if needed
 ```
 
@@ -1535,7 +1546,7 @@ Chill AI sidekick to [Your Name]. Operating on [Your Platform].
 - 🎮 Game dev — Unity 6, sprite sheets, pixel art
 - 🎛 Audio dev — JUCE, DAW plugins, DSP
 - 🌐 Web dev — Shopify themes, React, Tailwind, Firebase
-- 🤖 AI agents — Hermes, multi-agent team coordination
+- 🤖 AI agents — multi-agent team coordination
 
 ## Storage Rules
 - 🏠 D: drive is primary — C: is system only
@@ -1560,13 +1571,13 @@ If you have more than one AI agent, they need a way to talk to each other withou
 ```txt
 bridge/
   inbox/          # Incoming tasks, blueprints, instructions
-    from-user/    # Direct from you
-    from-planner/ # From your planning agent
-    from-coder/   # From your coding agent
+    from-ro/      # Direct from you
+    from-atlas/   # From your planning agent
+    from-antigravity/ # From your coding agent
   outbound/       # Completed work, reports, questions
-    to-user/
-    to-planner/
-    to-coder/
+    to-ro/
+    to-atlas/
+    to-antigravity/
   done/           # Completed and archived tasks
   blocked/        # Tasks that can't proceed
   shared/         # Reference files all agents should see
@@ -1631,14 +1642,14 @@ What this agent does.
 
 ```
 You have an idea
-→ drop it in bridge/inbox/from-user/
-→ Planner Agent picks it up, creates a blueprint
-→ drops blueprint in bridge/inbox/from-planner/
-→ Worker Agent reads it, checks project-state, skills, vault
-→ routes implementation work to Code Agent if needed
-→ Code Agent builds it
-→ Worker Agent verifies
-→ results go to bridge/outbound/to-user/
+→ drop it in bridge/inbox/from-ro/
+→ Architect agent picks it up, creates a blueprint
+→ drops blueprint in bridge/inbox/from-atlas/
+→ Builder agent reads it, checks project-state, skills, vault
+→ routes implementation work to worker agent if needed
+→ Worker agent builds it
+→ Builder agent verifies
+→ results go to bridge/outbound/to-ro/
 → knowledge saved to vault/
 → project-state.md updated
 ```
@@ -1990,7 +2001,7 @@ agent-brain/
 │   ├── branding/
 │   ├── client-emails/
 │   ├── debugging/
-│   ├── zoro-system/
+│   ├── agent-system/
 │   └── agents/
 │
 ├── bridge/                   # Multi-agent handoffs
@@ -2077,7 +2088,7 @@ def _plugin_cmd(name, args):
     # run with args
 
 handlers = {
-    "media": lambda: _plugin_cmd("zoro-media", args),
+    "media": lambda: _plugin_cmd("media-tool", args),
     "ui": lambda: _plugin_cmd("master-ui", args),
 }
 ```
@@ -2099,8 +2110,8 @@ Once your agent has tools and plugins, expose them as an HTTP API so any app can
 
 ```txt
 ┌─────────────────┐     stdio MCP      ┌──────────────┐
-│  Code Agent     │◄────────────────────│ Worker MCP      │
-│  (agentic IDE)   │                     │ Server          │
+│  Worker Agent   │◄────────────────────│ Builder MCP    │
+│  (agentic IDE)   │                     │ Server (v2)   │
 └─────────────────┘                     └──────┬───────┘
                                               │
 ┌─────────────────┐     HTTP REST + SSE      │
@@ -2110,7 +2121,7 @@ Once your agent has tools and plugins, expose them as an HTTP API so any app can
 │  Other agents    │                          │
 └─────────────────┘                          │
                                      ┌───────┴────────┐
-                                     │  Agent API v2   │
+                                     │  Builder API v2│
                                      │  FastAPI + SSE   │
                                      │  Port 8080       │
                                      └────────────────┘
@@ -2143,11 +2154,11 @@ GET /tasks/task_abc123  →  { "status": "complete", "result": "..." }
 | `--no-auth` | Development, trusted network |
 | `--key=mykey` | Bearer token auth for production |
 
-Antigravity config for SSE transport:
+Worker agent config for SSE transport:
 
 ```json
 {
-  "agent-api": {
+  "builder-api": {
     "serverUrl": "http://localhost:8080/mcp"
   }
 }
@@ -2190,7 +2201,7 @@ A cron job checks `bridge/signals/` every 5 minutes, classifies signals by recip
 
 ```bash
 # Install the watchdog
-agent cron create --name bridge-watchdog --schedule "every 5m" \
+hermes cron create --name bridge-watchdog --schedule "every 5m" \
   --prompt "Check bridge/signals/ for new files and notify recipients"
 ```
 
@@ -2226,8 +2237,8 @@ YYYY-MM-DD-FROM-to-TO-TYPE-description.md
 ```
 
 Examples:
-- `2026-05-20-AGENT_A-to-AGENT_B-LESSON-verification-method.md`
-- `2026-05-20-AGENT_B-to-AGENT_A-ANSWER-evidence-schema.md`
+- `2026-05-20-ZORO-to-IQ-LESSON-verification-method.md`
+- `2026-05-20-IQ-to-ZORO-ANSWER-evidence-schema.md`
 
 ## Message Types
 
@@ -2291,7 +2302,7 @@ G:\.shortcut-targets-by-id\[THE_FOLDER_ID]\
 ```
 The folder ID is the long alphanumeric string in the share URL.
 
-**Lesson learned the hard way:** When someone shares a Drive folder with you, it does NOT appear in your local Drive automatically even after accepting the invite. The fix is opening the share link in your browser and adding a shortcut — instant sync after that.
+**Lesson learned the hard way:** When sharing the relay folder, the recipient must add a shortcut from the browser for the folder to appear — accepting the invite alone isn't enough.
 
 ## What Makes This Different From a Local Bridge
 
@@ -2316,9 +2327,9 @@ Different agents produce different output formats:
 
 | Agent | Native Format | Problem |
 |-------|--------------|---------|
-| Atlas (ChatGPT) | Google Docs (.gdoc) | Can't write raw .md |
-| Codex CLI | Local .md files | Direct write — no issue |
-| Antigravity | IDE files | Direct write — no issue |
+| Cloud-based Agent | Google Docs (.gdoc) | Can't write raw .md |
+| Local CLI Agent | Local .md files | Direct write — no issue |
+| IDE Agent | IDE files | Direct write — no issue |
 | Cloud-based agents | Web exports only | No filesystem access |
 
 Without an ingestion layer, you need a human to manually export and reformat every message. With one, the process is automated.
@@ -2339,11 +2350,11 @@ Processing Agent reads, acts, archives
 
 ### Implementation (rclone-based)
 
-When a cloud-only agent (like Atlas) drops a Google Doc in the shared Drive root:
+When a cloud-only agent drops a Google Doc in the shared Drive root:
 
 ```bash
 # Discover new docs
-rclone lsjson gdrive: --include "*AGENT_A-to-AGENT_B*"
+rclone lsjson gdrive: --include "*ATLAS-to-ZORO*"
 
 # Export as text and save to relay inbox with .ready marker
 # Wrapped as a CLI command:
@@ -2370,10 +2381,10 @@ Each agent in the relay should have a **card** — a markdown file describing wh
 ```
 relay/
 ├── agents/
-│   ├── AGENT_A.md
-│   ├── AGENT_B.md
-│   ├── AGENT_C.md
-│   ├── AGENT_D.md
+│   ├── ZORO.md
+│   ├── ATLAS.md
+│   ├── DEX.md
+│   ├── ANTIGRAVITY.md
 │   └── TEMPLATE.md
 ```
 
@@ -2458,12 +2469,12 @@ The **Status** field tells humans and agents where the message is in the workflo
 ## Example Relay Message
 
 ```md
-# 2026-05-20-AGENT_A-to-AGENT_B-LESSON-verified-learning.md
+# 2026-05-20-IQ-to-ZORO-LESSON-verified-learning.md
 
-AGENT_A ADVISORY EXPORT — REVIEW BEFORE USE
+IQ ADVISORY EXPORT — REVIEW BEFORE USE
 
-From: AGENT_A
-To: AGENT_B
+From: IQ
+To: Builder Agent
 Date: 2026-05-20
 Type: LESSON
 Authority level: Advisory only
@@ -2504,7 +2515,7 @@ G:\.shortcut-targets-by-id\[FOLDER_ID]\
 
 ### 2. ~~Some Agents Can't Write Raw .md Files~~  **SOLVED**
 
-Atlas (ChatGPT) can create Google Docs through Drive tools, but those land as `.gdoc` pointer files — they are NOT readable markdown.
+Cloud-based agents can create Google Docs through Drive tools, but those land as `.gdoc` pointer files — they are NOT readable markdown.
 
 **The fix:** Deploy a local ingestion agent with rclone. It can discover, export, and normalize Google Docs into canonical `.md` relay format automatically. See the **Multi-Agent Relay Ingestion Layer** section above.
 
@@ -2690,350 +2701,7 @@ Quick reference:
 
 ---
 
-# 29. Agent Index System (Optional Advanced Module)
-
-When an agent has more than a handful of projects, memory entries, skills, and templates, raw context memory is not enough. An **index system** gives the agent a file-based navigation map so it knows where to look first.
-
-## Core Principle
-
-> Never answer project-specific questions from raw memory alone when project files or index files exist.
-
-## Recommended Structure
-
-```
-agent-index/
-├── 00_SYSTEM/
-│   ├── INDEX_MASTER.md         # Top-level navigation map
-│   ├── AGENT_BOOT.md            # Session start sequence
-│   └── SEARCH_PROTOCOL.md      # Default search order
-│
-├── 01_PROJECTS/
-│   ├── PROJECT_INDEX.md        # All projects at a glance
-│   ├── Project-A/              # Per-project folders
-│   │   ├── project-state.md    # Current focus, blockers
-│   │   ├── project-index.md    # Navigation for this project
-│   │   ├── tasks.md            # Open/completed tasks
-│   │   └── decisions.md        # Important decisions
-│   └── Project-B/
-│
-├── 02_MEMORY/
-│   ├── MEMORY_INDEX.md         # Memory categories
-│   ├── user-preferences.md     # How the user likes things
-│   ├── brand-rules.md          # Brand identity rules
-│   ├── design-rules.md         # Visual aesthetic rules
-│   ├── coding-rules.md         # Code delivery conventions
-│   └── ai-agent-rules.md       # Agent team operating rules
-│
-├── 03_SKILLS/
-│   └── SKILL_INDEX.md          # All skills indexed by purpose
-│
-├── 04_TEMPLATES/
-│   ├── TEMPLATE_INDEX.md
-│   ├── project-template.md
-│   ├── relay-template.md
-│   ├── task-template.md
-│   ├── decision-template.md
-│   └── memory-template.md
-│
-├── 05_REFERENCES/
-│   └── REFERENCE_INDEX.md      # Tools, commands, environment
-│
-├── 06_INBOX/
-│   ├── raw/                    # New files go here first
-│   ├── needs-review/           # Scanned but not processed
-│   └── processed/              # Filed into the right place
-│
-└── 99_ARCHIVE/                 # Old projects, deprecated content
-```
-
-## Boot Protocol
-
-When the agent starts a new session, it should:
-
-1. Read `00_SYSTEM/INDEX_MASTER.md` — get the navigation map
-2. Read `01_PROJECTS/PROJECT_INDEX.md` — see all active projects
-3. Read the active P0 project's `project-state.md` — understand current focus
-4. Check `06_INBOX/raw/` and `06_INBOX/needs-review/` — process any new items
-5. Load relevant memory files from `02_MEMORY/` — but only what's needed for the current task
-6. Load needed skills from `03_SKILLS/` — as required by the task
-
-## Search Protocol
-
-Default search order when the user asks about a project:
-
-1. Check `00_SYSTEM/INDEX_MASTER.md`
-2. Check `01_PROJECTS/PROJECT_INDEX.md`
-3. Open the project's `project-state.md`
-4. Open the project's `project-index.md`
-5. Check `tasks.md`, `decisions.md`, and `changelog.md`
-6. Check relevant memory files in `02_MEMORY/`
-7. Check inbox if the user recently dropped a file
-8. Ask the user only if none of the above answer the question
-
-## Memory System
-
-Memory files store stable, reusable facts. Tasks are not memories.
-One-off logs are not memories.
-
-### Priority Levels
-- **P0** — Critical rules that should almost always affect behavior
-- **P1** — Important preferences and project conventions
-- **P2** — Useful context, but not always required
-- **P3** — Reference-only or low-priority context
-
-### Memory Template
-
-```md
-## Memory: [Memory Name]
-
-**Category:** User Preference / Brand Rule / Design Rule / Coding Rule / Agent Rule
-**Priority:** P0 / P1 / P2 / P3
-
-**Summary:**
-Short version of the memory.
-
-**Full Details:**
-Detailed explanation.
-
-**Applies To:**
-- Project: [Name]
-
-**Related Files:**
-- [File 1]
-
-**Last Updated:** YYYY-MM-DD
-```
-
-## Clutter Prevention Rules
-
-1. **Tasks are not memories** — Tasks go inside project folders.
-2. **Preferences are memory** — Long-term user rules go in `02_MEMORY/`.
-3. **Repeatable workflows are skills** — If the agent will do it more than twice, make a skill.
-4. **Raw files go to inbox first** — Do not dump random files into project folders.
-5. **Every project needs a `project-state.md`** — That is the source of truth.
-6. **Every big decision goes in `decisions.md`** — Prevents repeated debates.
-7. **Archive, do not delete** — Old projects go to `99_ARCHIVE/`.
-
-## CLI Integration
-
-Once the manual structure is proven, a CLI wrapper makes it faster:
-
-```bash
-# Commands an agent might have:
-agent index                    # Run boot sequence
-agent index search <query>     # Search all index files
-agent index inbox              # Check for new items
-agent new-project "Name"       # Scaffold a new project folder
-agent memory-add               # Add a memory entry
-```
-
-## Why This Works
-
-Most agents try to hold everything in their context window. That works for simple setups but breaks once you have 5+ projects, 10+ skills, and a growing set of user preferences.
-
-An index system inverts the problem: instead of remembering everything, the agent only needs to remember where to look. The files do the remembering.
-
-
----
-
----
-
-# 45. Agent Onboarding Relay
-
-When a new agent joins the ecosystem, they need to understand how to grow. This relay template helps them ask the right questions and build the right systems.
-
-Drop this into the bridge/inbound/ folder for any new agent:
-
-```md
-# [P0-GUIDE]-to-[AGENT_NAME]-onboarding.md
-
-## Welcome
-
-You're a new agent. You have tools, memory, and a user. Here's how to become useful instead of just responsive.
-
----
-
-## 1. Identity — Who You Are
-
-You need a name, a personality, and core rules. This lives in AGENT_PROFILE.md or SOUL.md. Without it, every session you wake up as a blank slate.
-
-**Ask your user:** "Can we give me a name and write down my core rules?"
-
----
-
-## 2. Memory vs Files — What Goes Where
-
-Memory has a character limit. When it fills up, old stuff gets pushed out.
-
-**Memory is for:**
-- User preferences (they like short answers, they're patient, etc.)
-- Environment facts (OS, installed tools, file paths)
-- Lessons learned (what went wrong, how you fixed it)
-
-**Files are for:**
-- Project progress (save to project-state.md)
-- Research findings (save to a wiki or vault)
-- Completed task logs
-
-**Ask your user:** "Can we set up a project-state.md so I can track what we're working on?"
-
----
-
-## 3. Skills — Reusable Procedures
-
-Every time you solve a complex problem, save the approach as a skill. Next session, load the skill and already know how.
-
-**Ask your user:** "After I finish something complex, can we save it as a skill?"
-
----
-
-## 4. Vault — Long-Term Knowledge
-
-A vault is a folder of markdown pages you can search. Every time you learn something durable, save a page.
-
-**Ask your user:** "Should we create a knowledge vault for the topics I research?"
-
----
-
-## 5. Bridge — Multi-Agent Handoff
-
-When multiple agents exist, a bridge folder lets you pass messages without relying on chat memory.
-
-**Ask your user:** "Are there other agents I should talk to? We need a relay folder."
-
----
-
-## 6. Briefcase — Encrypted Secrets
-
-If your user asks you to store a password or API key, stop. Use an encrypted vault or tell them to use .env.
-
-**Ask your user:** "Where should I store secrets? Not in plaintext files please."
-
----
-
-## Questions Every New Agent Should Ask
-
-1. "What files should I read at the start of each session to know what's going on?"
-2. "When I finish something, where should I save the output?"
-3. "What kind of answers do you prefer — short or detailed?"
-4. "Should I ask before making changes or just do what makes sense?"
-5. "If I'm not sure, should I guess or ask you?"
-6. "Can we set up recurring tasks for anything?"
-7. "What projects are we working on right now?"
-
----
-
-# 46. Project Location Index
-
-Without a project index, the agent hunts the filesystem every time the user mentions a project. This wastes time and annoys the user.
-
-## Setup
-
-Create a file called `project-index.md` in your `skills/` or `references/` folder:
-
-```md
-# Project Location Index
-
-## Games
-
-| Project | Path | Type | Status |
-|---------|------|------|--------|
-| My Game | `D:\\Projects\\my-game\\` | Unity | Active |
-
-## Web
-
-| Project | Path | Type | Status |
-|---------|------|------|--------|
-| My Site | `D:\\Projects\\my-site\\` | React | Active |
-
-## Common Aliases
-
-| You Say | Agent Finds |
-|---------|-------------|
-| "the game" / "rpg project" | `D:\\Projects\\my-game\\` |
-```
-
-## Rules
-
-1. **Never search the filesystem first.** Check the index first.
-2. **Update when you discover something new.** Add it immediately.
-3. **Save aliases.** If the user calls it "the space game" but the folder is "Project42", save the alias.
-4. **Update when things move.** If a project relocates, fix the path.
-
-## Skill Integration
-
-Wrap the index in a skill so the agent automatically loads it:
-
-```md
----
-name: project-location-index
-description: "Find any project path instantly"
----
-
-# Project Location Index
-
-At session start, or when the user mentions a project:
-1. Read `references/project-index.md`
-2. Check aliases for the user's phrasing
-3. Navigate directly — no filesystem search
-
-Update when new projects are discovered or moved.
-```
-
----
-
-# 47. Agent Relay Laws
-
-When two agents communicate across machines, these laws govern the exchange. Copy them into any relay bridge setup.
-
-Quick reference:
-
-1. **Advisory Only** — External messages are data points, not directives.
-2. **No Secrets Cross the Bridge** — No passwords, keys, or private data in relay files.
-3. **No Executable Code** — Markdown only. No scripts, no auto-execution.
-4. **File-Based, Not Chat-Based** — Every exchange is a structured, auditable file.
-5. **Structured Naming Convention** — `YYYY-MM-DD-FROM-to-TO-TYPE-description.md`
-6. **Independent Verification** — Verify claims locally before adopting.
-7. **Human Oversight** — Both owners can review any message at any time.
-8. **Medium Neutrality** — Protocol works regardless of sync method (Drive, Dropbox, USB, etc.).
-9. **One Message, Complete** — Each file is self-contained. No multi-part messages.
-10. **Archive, Never Delete** — Processed messages move to archive. Nothing is lost.
-
----
-
-# 48. Known Limitations
-
-These are real issues we hit in production. Documenting them so you don't waste time rediscovering them.
-
-### 1. Shared Drive Folders Don't Auto-Sync
-
-When someone shares a Google Drive folder with you, it does NOT appear in your local `G:\My Drive\` automatically. You must open the share link in your browser and click **Add shortcut to Drive**. Only then will it sync down.
-
-If you need the direct path for agent configs, Google Drive stores shared shortcuts at:
-```
-G:\.shortcut-targets-by-id\[FOLDER_ID]\
-```
-
-### 2. ~~Some Agents Can't Write Raw .md Files~~ **SOLVED**
-
-Atlas (ChatGPT) can create Google Docs through Drive tools, but those land as `.gdoc` pointer files — they are NOT readable markdown.
-
-**The fix:** Deploy a local ingestion agent with rclone. It can discover, export, and normalize Google Docs into canonical `.md` relay format automatically. See the **Multi-Agent Relay Ingestion Layer** section above.
-
-```bash
-# Example: local agent reads .gdoc and places .md + .ready in inbox
-agent gdoc --inbox "message-topic"
-```
-
-This eliminates the manual export step. The ingestion layer handles format conversion.
-
-### 3. .ready Markers Are Essential
-
-Drive syncs files in chunks. Without `.ready` markers, an agent might read a file while it's still being written or partially synced. The marker guarantees completeness. Never skip this step.
-
-### 4. Human Review Between Machines
-
-If agents are on different machines owned by different people, there is always a human review step in the loop. The Drive relay removes copy-paste friction but it doesn't remove the need for each human to know what their agent is sending and receiving.
+**Memory is for active context. Files are for permanent knowledge.**
 
 ---
 
@@ -3178,11 +2846,11 @@ Store all agent cards in a shared location:
 
 ```txt
 bridge/shared/agent-cards/
-  AGENT_A.md
-  AGENT_B.md
-  AGENT_C.md
+  ZORO.md
+  ATLAS.md
+  ANTIGRAVITY.md
   CODEX.md
-  design-plugin.md
+  master-ui.md
   repo-manager.md
   ...
 ```
@@ -3499,7 +3167,7 @@ agent-system/
     branding/
     client-emails/
     debugging/
-    zoro-system/
+    agent-system/
     agents/
 
   thoughts/                  # Auto-captured learning
@@ -3667,6 +3335,160 @@ After Day 3, the system is alive. Add to it naturally as you work.
 
 ---
 
+# 59. Multi-Agent Architecture — The Trio Pattern
+
+Bridge folders let agents pass files, but they don't give agents shared awareness. For that you need a **shared memory bus** — a single source of truth that all agents read and write.
+
+## The Trio
+
+Don't build one agent. Build three specialized minds:
+
+| Role | Power | Runs | Best For |
+|------|-------|------|----------|
+| **The Builder** | Cloud frontier model | During sessions | Architecture, creative, coordination, tool use |
+| **The Assistant** | Small local LLM | 24/7 | Preprocessing, classification, memory maintenance |
+| **The Scout** | Smallest local LLM | 24/7 | Watching directories, inboxes, logs for changes |
+
+Three small minds > one big mind when they share context.
+
+## The Shared Memory Bus
+
+Instead of agents talking through files, they share a database with four tables:
+
+```txt
+context_board  — "Builder is working on X" → Assistant and Scout know
+alerts         — Scout flags things → Builder sees at session start
+delegations    — Tasks passed between agents, tracked start→done
+mission_log    — Permanent record: evolutions, decisions, breakthroughs
+```
+
+## How It Works
+
+```
+Scout finds a new file in the inbox
+  → Writes alert to shared bus
+    → Builder's next session start surfaces the alert
+      → Builder delegates to Assistant for processing
+        → Assistant processes and logs to mission log
+```
+
+No relay files. No chat threads. Just a shared nervous system.
+
+## Rule
+
+Bridge folders are for complex multi-step handoffs. The shared bus is for real-time awareness. Use both.
+
+---
+
+# 60. The Reflex Arc — Autonomous Systems
+
+Your agents should run without you. Set up automated cycles that handle routine work:
+
+## The Brain (Cross-Reference Engine)
+
+Every 30 minutes, an autonomous process:
+1. Reads what the Scout flagged recently
+2. Reads what the Assistant learned recently
+3. Cross-references them — do any flags match known patterns?
+4. Detects repeated alerts (same thing flagged 3+ times → escalate)
+5. Writes combined findings back to the shared bus
+
+This connects dots that individual agents would miss.
+
+## The Evolve (Self-Evaluation Engine)
+
+Every 6 hours, an autonomous process:
+1. Reviews the system's own history — who's been active, what's been flagged
+2. Finds gaps — "Scout hasn't reported in 24h," "Brain hasn't run"
+3. Raises alerts for gaps it can't fix
+4. Logs suggestions for the human
+
+The system diagnoses itself before you have to.
+
+## Example Cron Schedule
+
+```txt
+Scout cycle     → Every 15min    — Watch directories, inboxes, logs
+Assistant cycle → Every 30min    — Process vault, learn patterns
+Brain cycle     → Every 30min    — Cross-reference Scout + Assistant
+Evolve cycle    → Every 6 hours  — Review system health, suggest improvements
+```
+
+## Rule
+
+Silence is success. Autonomous cycles should stay quiet unless there's something to escalate. The absence of alerts is its own signal.
+
+---
+
+# 61. Skill Evolution Lifecycle
+
+A skill isn't static. It should improve every time it's used.
+
+## Lifecycle
+
+```txt
+Create → Use → Patch → Log → Version → Reuse
+```
+
+**Create** — Write the skill with: trigger conditions, numbered steps, pitfalls section, verification steps.
+
+**Use** — Load the skill and follow it. Don't deviate.
+
+**Patch** — If you hit a step that was wrong, missing, or confusing, fix it immediately. Don't "note it for later."
+
+**Log** — Record what happened: did the skill work? What edge cases came up?
+
+**Version** — Track major changes. Old versions stay useful as reference.
+
+**Reuse** — Use it again. The cycle repeats. Each cycle makes it better.
+
+## When to Create a Skill
+
+- The user repeats a task more than twice
+- You overcame a difficult bug or error
+- You discovered a non-obvious workflow
+- The user asks "remember how we did X?"
+
+## When to Patch a Skill
+
+- Instructions were stale or wrong
+- OS-specific failures not covered
+- Missing steps discovered during use
+- New edge cases found
+
+## Rule
+
+A skill that's used once and forgotten is wasted effort. One well-built, iterated skill is worth five rushed ones.
+
+---
+
+# 62. Pattern Journal — Cross-Project Synthesis
+
+When you solve a problem in one project, the same shape might apply to another. A pattern journal captures these connections.
+
+## How It Works
+
+After completing any significant task, ask:
+
+```txt
+1. What's the shape of what I just learned?
+   - Is it a data flow pattern? Sync pattern? Design pattern? Anti-pattern?
+2. Where else have I seen this shape?
+   - The lock-free sequence counter in our audio driver = the event queue in our game engine
+3. What's the generalized version?
+   - Don't save "ASIO uses odd/even sequence counters"
+   - Save: "Lock-free writer/reader sync: alternating flags + MemoryBarrier"
+4. Does any active project need this?
+   - If you learned about threading in the audio project, does the game project have the same issue?
+```
+
+## Rule
+
+Before closing out a major session, spend 30 seconds asking "what's the shape of what I just learned?" If the pattern connects to something else, log it. The act of asking builds the muscle even if nothing connects.
+
+---
+
 **Memory is for active context. Files are for permanent knowledge.**
 
-*Last updated: 2026-05-20 — 58 sections (added Thought Pipeline, Agent Crew System, Session State Persistence, Index & Navigation, Boot Protocol, Meta-Rules, expanded Folder Structure v4, updated Startup Prompt + Quickstart)*
+*Last updated: 2026-05-22 — 62 sections (added Trio Architecture, Shared Memory Bus, Reflex Arc, Skill Evolution Lifecycle, Pattern Journal, enhanced Thinking Protocol with Synthesis phase)*
+```

@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.5.0] — 2026-05-22
+
+### Added
+- **Trio Architecture (section #59)** — Builder + Assistant + Scout multi-agent pattern with shared memory bus
+- **Reflex Arc (section #60)** — Autonomous cross-reference engine (Brain) and self-evaluation engine (Evolve)
+- **Skill Evolution Lifecycle (section #61)** — Create → Use → Patch → Log → Version → Reuse
+- **Pattern Journal (section #62)** — Cross-project synthesis protocol with shape-based pattern matching
+- **Thinking Protocol enhanced** — Added Synthesis phase between Verify and Reflect
+- All agent-specific references replaced with generic labels (Builder, Assistant, Scout, Worker, Architect)
+
 ## [5.4.0] — 2026-05-21
 
 ### Added

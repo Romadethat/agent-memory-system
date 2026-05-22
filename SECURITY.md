@@ -39,4 +39,4 @@ This system stores project notes, preferences, logs, and workflow data as plain-
 
 If you discover a security concern in this project, open an issue at:
 
-https://github.com/Romadethat/agent-memory-system/issues
+https://github.com/your-username/agent-memory-system/issues

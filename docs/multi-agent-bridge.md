@@ -248,10 +248,10 @@ When a cloud-only agent (like ChatGPT) drops a Google Doc in the shared Drive ro
 
 ```bash
 # Discover new docs
-rclone lsjson gdrive: --include "*ATLAS-to-ZORO*"
+rclone lsjson gdrive: --include "*ARCHITECT-to-BUILDER*"
 
 # Export as text and save to relay inbox with .ready marker
-zoro gdoc --inbox "partial-name-match"
+agent gdoc --inbox "partial-name-match"
 ```
 
 ### Key concepts
@@ -268,7 +268,7 @@ zoro gdoc --inbox "partial-name-match"
 When setting up a cross-machine relay via Google Drive:
 
 1. **Shared folders don't auto-sync** — Recipients must open the share link in a browser and click "Add shortcut to Drive" before the folder appears locally
-2. **Some agents can't write raw .md** — ChatGPT/Atlas creates Google Docs (.gdoc). A local ingestion agent with rclone solves this
+2. **Some agents can't write raw .md** — Cloud-based agents create Google Docs (.gdoc). A local ingestion agent with rclone solves this
 3. **.ready markers are essential** — Drive syncs in chunks. Always pair a message file with a matching .ready marker
 4. **Human review is always possible** — Cloud-synced files are visible to both humans at all times
 5. **No secrets** — Never pass passwords, API keys, or tokens through relay files

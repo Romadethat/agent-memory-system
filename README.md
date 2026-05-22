@@ -52,7 +52,7 @@ For multi-agent setups, it also gives agents a file-based bridge so they can exc
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/Romadethat/agent-memory-system.git
+git clone https://github.com/your-username/agent-memory-system.git
 cd agent-memory-system
 ```
 
@@ -243,10 +243,10 @@ See [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) and [docs/full-refe
 
 | Example | What it shows |
 |---------|--------------|
+| [agent-card](examples/agent-card.md) | Agent card for multi-agent discovery |
 | [basic-agent-brain](examples/basic-agent-brain/) | Complete solo agent setup with profile, rules, state, and preferences |
 | [multi-agent-bridge](examples/multi-agent-bridge/) | Multi-agent handoff workflow with inbox/outbound/done lifecycle |
 | [example-session](examples/example-session/) | Before/after comparison of a session with the system |
-| [zoro-style-agent-card](examples/zoro-style-agent-card.md) | Agent card for multi-agent discovery |
 
 ---
 
