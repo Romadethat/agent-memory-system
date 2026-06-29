@@ -1,0 +1,56 @@
+name: antigravity
+description: ANTIGRAVITY — custom generated theme
+colors:
+  banner_border: "#a855f7"
+  banner_title: "#da6eff"
+  banner_accent: "#c966ff"
+  banner_dim: "#542a7b"
+  banner_text: "#fc7fff"
+  ui_accent: "#c966ff"
+  ui_label: "#da6eff"
+  ui_ok: "#b85dff"
+  ui_error: "#ef4444"
+  ui_warn: "#facc15"
+  prompt: "#fc7fff"
+  input_rule: "#a855f7"
+  response_border: "#da6eff"
+  status_bar_bg: "#100818"
+  status_bar_text: "#fc7fff"
+  status_bar_strong: "#da6eff"
+  status_bar_dim: "#542a7b"
+  status_bar_good: "#b85dff"
+  status_bar_warn: "#facc15"
+  status_bar_bad: "#ef4444"
+  status_bar_critical: "#ef4444"
+  session_label: "#da6eff"
+  session_border: "#542a7b"
+spinner:
+  waiting_faces: ["(\u25d5)", "(\u2299)", "(\u25e1)", "(\u00b0)"]
+  thinking_faces: ["(\u2301)", "(\u2299)", "(\u25d5)", "(\u00b0)"]
+  thinking_verbs:
+    - "processing"
+    - "analyzing"
+    - "computing"
+    - "synthesizing"
+    - "building"
+    - "forging"
+  wings:
+    - ["⟪◆", "◆⟫"]
+    - ["⟪◇", "◇⟫"]
+branding:
+  agent_name: "ANTIGRAVITY"
+  welcome: "Welcome to ANTIGRAVITY! Type your message or /help for commands."
+  goodbye: "Goodbye! See you next time."
+  response_label: " ANTIGRAVITY "
+  prompt_symbol: "❯"
+  help_header: "Available Commands"
+tool_prefix: "┊"
+banner_logo: |
+  [dim #542a7b]-=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=-[/]
+  [bold #da6eff] █████╗   ███╗   ██╗  ████████╗  ██╗   ██████╗  ██████╗    █████╗   ██╗   ██╗  ██╗  ████████╗  ██╗   ██╗[/]
+  [bold #da6eff]██╔══██╗  ████╗  ██║  ╚══██╔══╝  ██║  ██╔════╝  ██╔══██╗  ██╔══██╗  ██║   ██║  ██║  ╚══██╔══╝  ╚██╗ ██╔╝[/]
+  [#c966ff]███████║  ██╔██╗ ██║     ██║     ██║  ██║  ███╗  ██████╔╝  ███████║  ██║   ██║  ██║     ██║      ╚████╔╝[/]
+  [#fc7fff]██╔══██║  ██║╚██╗██║     ██║     ██║  ██║   ██║  ██╔══██╗  ██╔══██║  ╚██╗ ██╔╝  ██║     ██║       ╚██╔╝[/]
+  [#fc7fff]██║  ██║  ██║ ╚████║     ██║     ██║  ╚██████╔╝  ██║  ██║  ██║  ██║   ╚████╔╝   ██║     ██║        ██║[/]
+  [dim #542a7b]╚═╝  ╚═╝  ╚═╝  ╚═══╝     ╚═╝     ╚═╝   ╚═════╝  ╚═╝  ╚═╝  ╚═╝  ╚═╝    ╚═══╝    ╚═╝     ╚═╝        ╚═╝[/]
+  [dim #542a7b]-=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=-[/]

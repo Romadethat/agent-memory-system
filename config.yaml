@@ -1,0 +1,13 @@
+mcp_servers:
+  aseprite:
+    command: "python"
+    args: ["C:\\Users\\User\\AppData\\Local\\hermes\\plugins\\aseprite-mcp\\aseprite_mcp_server.py"]
+    timeout: 120
+    connect_timeout: 30
+  voicebox:
+    command: "D:\\Program Files\\voicebox-mcp.exe"
+    args: []
+    timeout: 120
+    connect_timeout: 30
+    env:
+      VOICEBOX_CLIENT_ID: "zoro"

@@ -45,3 +45,10 @@ ideas/
 thoughts/
 reference/
 crew-agents/
+
+# Heavy / generated
+sessions/
+audio_cache/
+image_cache/
+api.log
+pairing/

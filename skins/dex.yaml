@@ -1,0 +1,56 @@
+name: dex
+description: DEX — custom generated theme
+colors:
+  banner_border: "#00e5ff"
+  banner_title: "#00ffff"
+  banner_accent: "#00ffff"
+  banner_dim: "#00727f"
+  banner_text: "#00ffff"
+  ui_accent: "#00ffff"
+  ui_label: "#00ffff"
+  ui_ok: "#00fbff"
+  ui_error: "#ef4444"
+  ui_warn: "#facc15"
+  prompt: "#00ffff"
+  input_rule: "#00e5ff"
+  response_border: "#00ffff"
+  status_bar_bg: "#001619"
+  status_bar_text: "#00ffff"
+  status_bar_strong: "#00ffff"
+  status_bar_dim: "#00727f"
+  status_bar_good: "#00fbff"
+  status_bar_warn: "#facc15"
+  status_bar_bad: "#ef4444"
+  status_bar_critical: "#ef4444"
+  session_label: "#00ffff"
+  session_border: "#00727f"
+spinner:
+  waiting_faces: ["(\u25d5)", "(\u2299)", "(\u25e1)", "(\u00b0)"]
+  thinking_faces: ["(\u2301)", "(\u2299)", "(\u25d5)", "(\u00b0)"]
+  thinking_verbs:
+    - "forging"
+    - "weaving"
+    - "processing"
+    - "computing"
+    - "crafting"
+    - "optimizing"
+  wings:
+    - ["⟪◆", "◆⟫"]
+    - ["⟪◇", "◇⟫"]
+branding:
+  agent_name: "DEX"
+  welcome: "Welcome to DEX! Type your message or /help for commands."
+  goodbye: "Goodbye! See you next time."
+  response_label: " DEX "
+  prompt_symbol: "❯"
+  help_header: "Available Commands"
+tool_prefix: "┊"
+banner_logo: |
+  [dim #00727f]-=--=--=--=--=--=--=--=--=-[/]
+  [bold #00ffff]██████╗   ███████╗  ██╗  ██╗[/]
+  [bold #00ffff]██╔══██╗  ██╔════╝  ╚██╗██╔╝[/]
+  [#00ffff]██║  ██║  ███████╗   ╚███╔╝[/]
+  [#00ffff]██║  ██║  ██╔════╝   ██╔██╗[/]
+  [#00ffff]██████╔╝  ███████╗  ██╔╝ ██╗[/]
+  [dim #00727f]╚═════╝   ╚══════╝  ╚═╝  ╚═╝[/]
+  [dim #00727f]-=--=--=--=--=--=--=--=--=-[/]

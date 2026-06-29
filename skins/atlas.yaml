@@ -1,0 +1,56 @@
+name: atlas
+description: ATLAS — custom generated theme
+colors:
+  banner_border: "#4da6ff"
+  banner_title: "#64d7ff"
+  banner_accent: "#5cc7ff"
+  banner_dim: "#26537f"
+  banner_text: "#73f9ff"
+  ui_accent: "#5cc7ff"
+  ui_label: "#64d7ff"
+  ui_ok: "#54b6ff"
+  ui_error: "#ef4444"
+  ui_warn: "#facc15"
+  prompt: "#73f9ff"
+  input_rule: "#4da6ff"
+  response_border: "#64d7ff"
+  status_bar_bg: "#071019"
+  status_bar_text: "#73f9ff"
+  status_bar_strong: "#64d7ff"
+  status_bar_dim: "#26537f"
+  status_bar_good: "#54b6ff"
+  status_bar_warn: "#facc15"
+  status_bar_bad: "#ef4444"
+  status_bar_critical: "#ef4444"
+  session_label: "#64d7ff"
+  session_border: "#26537f"
+spinner:
+  waiting_faces: ["(\u25d5)", "(\u2299)", "(\u25e1)", "(\u00b0)"]
+  thinking_faces: ["(\u2301)", "(\u2299)", "(\u25d5)", "(\u00b0)"]
+  thinking_verbs:
+    - "thinking"
+    - "connecting"
+    - "crafting"
+    - "optimizing"
+    - "generating"
+    - "building"
+  wings:
+    - ["⟪◆", "◆⟫"]
+    - ["⟪◇", "◇⟫"]
+branding:
+  agent_name: "ATLAS"
+  welcome: "Welcome to ATLAS! Type your message or /help for commands."
+  goodbye: "Goodbye! See you next time."
+  response_label: " ATLAS "
+  prompt_symbol: "❯"
+  help_header: "Available Commands"
+tool_prefix: "┊"
+banner_logo: |
+  [dim #26537f]-=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=-[/]
+  [bold #64d7ff] █████╗   ████████╗  ██╗        █████╗   ███████╗[/]
+  [bold #64d7ff]██╔══██╗  ╚══██╔══╝  ██║       ██╔══██╗  ██╔════╝[/]
+  [#5cc7ff]███████║     ██║     ██║       ███████║  ███████╗[/]
+  [#73f9ff]██╔══██║     ██║     ██║       ██╔══██║  ╚════██║[/]
+  [#73f9ff]██║  ██║     ██║     ███████╗  ██║  ██║  ███████║[/]
+  [dim #26537f]╚═╝  ╚═╝     ╚═╝     ╚══════╝  ╚═╝  ╚═╝  ╚══════╝[/]
+  [dim #26537f]-=--=--=--=--=--=--=--=--=--=--=--=--=--=--=--=-[/]
