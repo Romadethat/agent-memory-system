@@ -1,5 +1,28 @@
 # Changelog
 
+## [6.0.0] — 2026-08-25
+
+The "living ecosystem" release — everything learned from running this system at production scale for three months, distilled into doctrine, templates, and patterns.
+
+### Added
+
+- **Inkbooks doctrine (docs/inkbooks.md)** — durable agent books: core book set (self/sandbox/evolution/project), the Sandbox promotion gate, surgical-editing law (never full-rebuild a living book), multi-agent updating conventions, governance (canonical vs copies vs forks)
+- **Agent Farm + Mission Control guide (docs/agent-farm-mission-control.md)** — orchestrated multi-agent work: lane anatomy, dispatch loop with atomic claims, the Checkpoint Contract (crash-resumable long builds), false-success guards (exit code 0 proves nothing), dashboard UI laws (size-locked panels), live provider switching
+- **Project Slots (docs/project-slots.md)** — ADHD-safe project switching: slot capsules, archive-on-new, lane-state clearing, PROJECT.md template with load-bearing NEXT STEP line, boot-contract ordering
+- **Knowledge Routing (docs/knowledge-routing.md)** — one home per fact: routing table across memory/skills/vault/books/slots, staleness law, corrections-are-gold, librarian pattern for small local models, governance gate questions
+- **Evolution Loop (docs/evolution-loop.md)** — self-improvement with receipts: do → record → evaluate → update; mutation log discipline; awakenings as version boundaries; Proof Hierarchy (real output > headless > vision-verify > playable artifact); fresh-eyes review; swarm economics
+- **Execution Modes (docs/execution-modes.md)** — DIRECT / DELEGATED / SWARM decision framework: when to work solo, when to orchestrate specialists, when to generate-N-and-pick; mode composition; anti-patterns
+- **Templates** — `PROJECT.md` (slot context), `ROLE.md` (farm specialist identity), `evolution-log.md` (lineage/mutations/awakenings starter), `book-index.md` (find-any-book map), `checkpoint-contract.md` (progress file format)
+
+### Changed
+
+- README updated to v6 structure with new docs in the documentation table and expanded feature list
+- Roadmap refreshed: completed items checked off (multi-agent coordination now shipped via farm/MC docs)
+
+### Philosophy
+
+v5 asked "how should an agent remember?" v6 asks "how should an agent SYSTEM operate?" — identity, books, slots, farm orchestration, evolution loops, and execution modes as one coherent operating doctrine.
+
 ## [5.5.0] — 2026-05-22
 
 ### Added

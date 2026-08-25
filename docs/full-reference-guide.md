@@ -1276,7 +1276,7 @@ If you don't have graph view or backlinks, use search instead:
 ### Step 4: Link Pages Without Wiki Links
 
 Instead of `[[Page Name]]`, use:
-- File paths: `see [projects/project-name.md](vault/projects/project-name.md)`
+- File paths: `see `vault/projects/project-name.md``
 - Tags in filenames: `project-name_concept_reference.md`
 - A central index file that lists everything
 

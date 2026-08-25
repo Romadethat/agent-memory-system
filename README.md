@@ -2,7 +2,7 @@
 
 > **Memory is for active context. Files are for permanent knowledge.**
 
-![Version](https://img.shields.io/badge/version-v5.4.0-blue)
+![Version](https://img.shields.io/badge/version-v6.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.10%2B-yellow)
 ![Status](https://img.shields.io/badge/status-starter--kit--ready-brightgreen)
@@ -22,6 +22,11 @@ A file-based operating structure for AI assistants and local agents. It gives an
 - Multi-agent handoff folders
 - Optional cross-machine relay ingestion
 - One-command setup scripts
+- **Durable agent books** (inkbooks) with surgical editing + promotion gates
+- **Project slots** for zero-effort context switching
+- **Agent farm orchestration doctrine** — dispatch loops, checkpoint contracts, false-success guards
+- **Evolution loop** — self-improvement with receipts (mutations, awakenings, proof hierarchy)
+- **Execution modes** — DIRECT / DELEGATED / SWARM decision framework
 
 ## What Problem It Solves
 
@@ -250,12 +255,32 @@ See [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) and [docs/full-refe
 
 ---
 
+## Templates
+
+Starter files for the v6 systems — copy, fill, ship:
+
+| Template | Use it for |
+|----------|-----------|
+| [templates/PROJECT.md](templates/PROJECT.md) | Project slot context (goal / status / NEXT STEP / decisions log) |
+| [templates/ROLE.md](templates/ROLE.md) | Farm specialist identity + output contract + personal book rules |
+| [templates/evolution-log.md](templates/evolution-log.md) | Evolution book starter: lineage, genes, mutations, awakenings |
+| [templates/book-index.md](templates/book-index.md) | One-page map of every book an agent owns |
+| [templates/checkpoint-contract.md](templates/checkpoint-contract.md) | Farm progress file format (crash-resumable builds) |
+
+---
+
 ## Documentation
 
 | Doc | What's inside |
-|-----|--------------|
+|-----|---------------|
 | [docs/architecture.md](docs/architecture.md) | System flow diagram and directory structure |
 | [docs/full-reference-guide.md](docs/full-reference-guide.md) | Deep 58-section reference, including thought pipeline, agent crew system, session state, index system, boot protocol, meta-rules, and cross-machine relay patterns |
+| [docs/inkbooks.md](docs/inkbooks.md) | Durable agent books: book set, promotion gates, surgical editing law, governance |
+| [docs/project-slots.md](docs/project-slots.md) | Project slot capsules for zero-effort context switching |
+| [docs/agent-farm-mission-control.md](docs/agent-farm-mission-control.md) | Orchestrated multi-agent work: lanes, dispatch loops, checkpoint contracts, dashboard laws |
+| [docs/knowledge-routing.md](docs/knowledge-routing.md) | One home per fact — memory vs skills vs vault vs books routing table |
+| [docs/evolution-loop.md](docs/evolution-loop.md) | Self-improvement with receipts: mutations, awakenings, proof hierarchy, swarm economics |
+| [docs/execution-modes.md](docs/execution-modes.md) | DIRECT / DELEGATED / SWARM — choosing who does the work |
 | [docs/windows-setup.md](docs/windows-setup.md) | Windows-specific path and env setup |
 | [docs/obsidian-setup.md](docs/obsidian-setup.md) | Using your agent brain as an Obsidian vault |
 | [docs/multi-agent-bridge.md](docs/multi-agent-bridge.md) | Multi-agent coordination and relay ingestion patterns |
@@ -299,6 +324,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## Roadmap
 
+- [x] Multi-agent coordination patterns (v6 — farm + mission control doctrine)
+- [x] Evolution / self-improvement system with receipts (v6)
+- [x] Project slot system (v6)
 - Demo GIF showing agent startup flow
 - More example skills (design review, deployment, research)
 - MCP server example for agent tool integration
