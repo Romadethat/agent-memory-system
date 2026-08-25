@@ -17,6 +17,8 @@ This system stores project notes, preferences, logs, and workflow data as plain-
 | Use a proper secret manager | For production: HashiCorp Vault, 1Password CLI, or platform-native keychains |
 | Review logs before sharing | Daily logs may contain project-sensitive information |
 | Isolate agent brains per project | Prevents cross-project data leaks |
+| Sanitize config examples | Real MCP/config files often contain local usernames, install paths, and client IDs — replace them with placeholders before committing (v6 config.yaml is a template for exactly this reason) |
+| Keep books private by default | Durable books (self/sandbox/evolution) accumulate personal working history — treat `books/` like `logs/` and keep it untracked |
 
 ## What This System Is Safe For
 

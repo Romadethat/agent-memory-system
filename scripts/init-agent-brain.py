@@ -69,6 +69,10 @@ def create_structure(base: Path):
         "scripts",
         "prompts",
         "templates",
+        # v6: durable books, project slots, optional farm lanes
+        "books",
+        "projects/_archive",
+        "farm",
     ]
     for d in dirs:
         (base / d).mkdir(parents=True, exist_ok=True)
@@ -137,14 +141,51 @@ def write_core_files(base: Path):
             f"# user-rules.md\n\n"
             f"*Created: {today}*\n\n"
             f"## Communication\n\n"
-            f"- [How you want to be spoken to]\n\n"
+            f"- [How you want to be spoken to]\n"
             f"## Preferences\n\n"
             f"- [Workflow preferences]\n"
-            f"- [Tool preferences]\n\n"
+            f"- [Tool preferences]\n"
             f"## Do Not Do\n\n"
-            f"- [Things the agent should avoid]\n\n"
+            f"- [Things the agent should avoid]\n"
             f"## Always Do\n\n"
             f"- [Things the agent should always do]\n"
+        ),
+        # v6: single source of truth for "what are we working on"
+        "projects/active-project.json": (
+            '{\n'
+            '  "id": null,\n'
+            '  "name": null,\n'
+            '  "project_md": null\n'
+            '}\n'
+        ),
+        # v6: book index — one-page map of every durable book
+        "books/BOOK-INDEX.md": (
+            f"# Book Index\n\n"
+            f"*Created: {today}*\n\n"
+            f"| Book | Path | Update method | Holds |\n"
+            f"|------|------|---------------|-------|\n"
+            f"| Self/Memory book | books/self-book.md (or .inkbook) | surgical appends | identity doctrine, operating rules |\n"
+            f"| Sandbox book | books/sandbox.md | append + promotion gate | candidate patterns awaiting proof |\n"
+            f"| Evolution book | books/evolution.md | append-only events | lineage, mutations, awakenings |\n\n"
+            f"Rules: every book appears here exactly once. Path changes update this page in the same operation. Point, don't duplicate.\n"
+        ),
+        # v6: evolution log starter
+        "books/evolution.md": (
+            f"# Evolution Log\n\n"
+            f"*Created: {today}*\n\n"
+            f"## Lineage\n\n"
+            f"- {today} — BORN: <agent name>, <base model/platform>, doctrine v1\n\n"
+            f"## Events\n\n"
+            f"(append-only: date — event-id — what happened, evidence, expected behavior change)\n\n"
+            f"## Genes & Capsules\n\n"
+            f"| Gene | Added | Trigger evidence | Effect |\n"
+            f"|------|-------|------------------|--------|\n\n"
+            f"## Mutation Log\n\n"
+            f"| Date | What | Why | Expected effect |\n"
+            f"|------|------|-----|-----------------|\n\n"
+            f"## Awakenings\n\n"
+            f"| Date | Awakening | Previous state → New state |\n"
+            f"|------|-----------|---------------------------|\n"
         ),
     }
 
@@ -179,8 +220,11 @@ def print_summary(base: Path):
     print(f"  {base}/")
     print(f"  ├── AGENT_PROFILE.md    # Who the agent is")
     print(f"  ├── MEMORY_RULES.md     # Memory vs files rules")
-    print(f"  ├── project-state.md    # Current work state")
+    print(f"  ├── project-state.md    # Current work state (thin pointer)")
     print(f"  ├── user-rules.md       # Your preferences")
+    print(f"  ├── books/              # Durable books: self, sandbox, evolution (v6)")
+    print(f"  ├── projects/           # Project slots + active-project.json (v6)")
+    print(f"  ├── farm/               # Optional specialist lanes (v6)")
     print(f"  ├── vault/              # Long-term knowledge")
     print(f"  ├── skills/             # Reusable workflows")
     print(f"  ├── logs/daily/         # Session history")
@@ -194,6 +238,12 @@ def print_summary(base: Path):
     print(f"  2. Edit user-rules.md with your preferences")
     print(f"  3. Tell your agent: 'Read the files in {base}/'")
     print(f"  4. Start working — the system logs automatically")
+    print()
+    print("  v6 systems (optional):")
+    print("  - docs/project-slots.md — create a slot in projects/, point active-project.json at it")
+    print("  - docs/inkbooks.md — promote Sandbox lessons into permanent books")
+    print("  - docs/agent-farm-mission-control.md — add ROLE.md specialists under farm/")
+    print("  - docs/evolution-loop.md — log mutations as behavior changes land")
 
 
 def setup(path_str: str):

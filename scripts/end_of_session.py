@@ -99,6 +99,32 @@ def update_project_state(base: Path, date_str: str):
     return state_path
 
 
+def touch_active_slot(base: Path, summary: str, timestamp: datetime.datetime):
+    """v6: append the session note to the active project slot's PROJECT.md log.
+
+    Reads projects/active-project.json; if a slot is live and its PROJECT.md
+    exists, appends a dated one-liner under '## Session Log'. Best-effort:
+    missing files or malformed JSON are silently skipped.
+    """
+    import json
+
+    ap = base / "projects" / "active-project.json"
+    try:
+        data = json.loads(ap.read_text(encoding="utf-8"))
+        project_md = data.get("project_md")
+        if not project_md or not data.get("id"):
+            return None
+        project_md = Path(project_md)
+        if not project_md.exists():
+            return None
+        time_str = timestamp.strftime("%Y-%m-%d %H:%M")
+        with open(project_md, "a", encoding="utf-8") as f:
+            f.write(f"\n- {time_str} — {summary}\n")
+        return project_md
+    except (OSError, ValueError):
+        return None
+
+
 def run():
     """Main session close routine."""
     args = sys.argv[1:]
@@ -143,6 +169,17 @@ def run():
     except OSError as e:
         red(f"  Error: Failed to update project state. {e}")
         sys.exit(1)
+
+    # v6: append session note to the active project slot (if one is live)
+    slot_path = touch_active_slot(base, summary, now)
+    if slot_path:
+        green(f"  Slot updated: {slot_path}")
+
+    # v6: evolution reminder — unlogged sessions are lost lessons
+    evo = base / "books" / "evolution.md"
+    if evo.exists():
+        yellow("  Reminder: log anything new in books/evolution.md")
+        yellow("  (mutations, corrections, gotchas — failures are canonical entries)")
 
     print(f"  Session complete — {now.strftime('%Y-%m-%d %H:%M')}")
 

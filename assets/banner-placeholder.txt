@@ -1,1 +1,9 @@
-Add repo banner image here (recommended: 1280x640 png)
+Asset placeholders — drop repo art here.
+
+Recommended:
+- banner.png        1280x640 repo banner (README hero)
+- architecture.png  system flow diagram (mirrors docs/architecture.md)
+- screenshots/      terminal captures of init + EOS output
+- diagrams/         svg/png diagrams for docs (farm topology, slot lifecycle)
+
+Keep binary sizes reasonable (<500KB each) — this repo stays clone-light.

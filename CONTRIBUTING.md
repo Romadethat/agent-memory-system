@@ -8,6 +8,7 @@ This repo is a starter kit and reference — contributions that make it more use
 
 - **More example skills** — workflows for different use cases (design review, deployment, research, content writing)
 - **Better starter templates** — improved AGENT_PROFILE.md, MEMORY_RULES.md, or thinking-protocol.md templates
+- **v6 doctrine examples** — real-world slot layouts, book structures, farm lane setups (sanitized of personal data)
 - **Setup scripts** — shell installer, package installer (pip, homebrew), one-command setup
 - **Documentation improvements** — clearer explanations, more examples, better structure
 - **Multi-agent workflow examples** — real-world handoff patterns between different AI agents

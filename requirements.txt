@@ -1,4 +1,7 @@
 # Agent Memory System — Starter Kit
 # No external dependencies required.
-# The init script and EOS script use only Python stdlib.
-# Optional: pip install watchfiles (for file watching)
+# The init script and EOS script use only Python stdlib (3.10+).
+#
+# Optional extras:
+#   pip install watchfiles    # file watching for auto-capture workflows
+#   pip install pyyaml        # if you extend the skin/config tooling

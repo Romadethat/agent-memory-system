@@ -1,13 +1,30 @@
+# MCP server configuration template
+#
+# Copy this block into your agent's config and point the paths at YOUR
+# local installs. Paths below are placeholders — replace them.
+#
+# Each entry: command (executable), args (arguments), timeouts in seconds,
+# optional env vars passed to the server process.
+
 mcp_servers:
-  aseprite:
+  # Example: a Python-based MCP server from a local plugin folder
+  my-python-server:
     command: "python"
-    args: ["C:\\Users\\User\\AppData\\Local\\hermes\\plugins\\aseprite-mcp\\aseprite_mcp_server.py"]
+    args: ["<path-to-your-plugin>/my_mcp_server.py"]
     timeout: 120
     connect_timeout: 30
-  voicebox:
-    command: "D:\\Program Files\\voicebox-mcp.exe"
+
+  # Example: a compiled MCP server binary
+  my-binary-server:
+    command: "<path-to-binary>/my-mcp-server.exe"
     args: []
     timeout: 120
     connect_timeout: 30
     env:
-      VOICEBOX_CLIENT_ID: "zoro"
+      MY_SERVER_CLIENT_ID: "<client-id>"
+
+# Notes:
+# - Keep secrets OUT of this file — use env var references your agent
+#   resolves at runtime, or a credentials manager.
+# - On Windows, double backslashes in YAML strings (C:\\path\\style).
+# - timeout = per-call limit; connect_timeout = initial handshake limit.

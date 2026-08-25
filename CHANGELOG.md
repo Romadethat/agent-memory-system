@@ -12,12 +12,18 @@ The "living ecosystem" release — everything learned from running this system a
 - **Knowledge Routing (docs/knowledge-routing.md)** — one home per fact: routing table across memory/skills/vault/books/slots, staleness law, corrections-are-gold, librarian pattern for small local models, governance gate questions
 - **Evolution Loop (docs/evolution-loop.md)** — self-improvement with receipts: do → record → evaluate → update; mutation log discipline; awakenings as version boundaries; Proof Hierarchy (real output > headless > vision-verify > playable artifact); fresh-eyes review; swarm economics
 - **Execution Modes (docs/execution-modes.md)** — DIRECT / DELEGATED / SWARM decision framework: when to work solo, when to orchestrate specialists, when to generate-N-and-pick; mode composition; anti-patterns
-- **Templates** — `PROJECT.md` (slot context), `ROLE.md` (farm specialist identity), `evolution-log.md` (lineage/mutations/awakenings starter), `book-index.md` (find-any-book map), `checkpoint-contract.md` (progress file format)
+- **Templates** — `PROJECT.md` (slot context), `ROLE.md` (specialist identity), `evolution-log.md` (lineage/mutations starter), `book-index.md` (find-any-book map), `checkpoint-contract.md` (progress file format)
+- **Scripts upgraded to v6** — `init-agent-brain.py` now creates `books/`, `projects/` (+ active-project.json), `farm/`, seeds BOOK-INDEX.md + evolution.md, and prints v6 next steps; `end_of_session.py` appends session notes to the active slot's PROJECT.md and reminds about evolution logging
+- **config.yaml sanitized** — real local paths/client IDs replaced with a documented placeholder template
+- **.gitignore expanded** — protects books, inkbooks, slots, farm runtime state (inbox/outbox/receipts/events), briefcases, registry files
+- **SECURITY.md / CONTRIBUTING.md refreshed** — config-sanitization and book-privacy practices; v6 doctrine examples as a contribution area
+- **assets guidance** — placeholder file now documents expected repo art (banner, diagrams, screenshots)
 
 ### Changed
 
 - README updated to v6 structure with new docs in the documentation table and expanded feature list
 - Roadmap refreshed: completed items checked off (multi-agent coordination now shipped via farm/MC docs)
+- requirements.txt clarified (stdlib-only core, optional extras listed)
 
 ### Philosophy
 

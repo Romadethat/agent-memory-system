@@ -13,6 +13,8 @@ secrets/
 private/
 *.key
 *.pem
+.credentials*
+credentials*
 
 # Database files
 *.sqlite
@@ -37,6 +39,17 @@ simulation-protocol.md
 end-session-checklist.md
 boot-protocol.md
 
+# v6 private data — books, slots, farm state, evolution records
+books/
+*.inkbook
+*.inkbrief
+projects/active-project.json
+projects/*/
+_archive/
+active-project.json
+evolution-log.md.local
+ROLE.md.local
+
 logs/
 vault/
 bridge/
@@ -45,6 +58,17 @@ ideas/
 thoughts/
 reference/
 crew-agents/
+
+# Farm / mission control runtime state (if you run the v6 patterns)
+inbox/
+outbox/
+processed/
+*.claim
+*.unresolved
+notifications.log
+events.jsonl
+services.json
+LIBRARY_REGISTRY.json
 
 # Heavy / generated
 sessions/
